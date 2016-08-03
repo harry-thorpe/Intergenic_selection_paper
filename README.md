@@ -23,4 +23,3 @@ Move into the project base directory:
 cd Intergenic_selection_paper
 ```
 
-do
