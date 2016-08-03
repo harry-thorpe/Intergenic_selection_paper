@@ -32,6 +32,7 @@ mkdir Alignment_files
 mkdir GFF_files
 mkdir Promoter_files
 mkdir Terminator_files
+cd ..
 ```
 
 ###Data files
@@ -48,4 +49,11 @@ To run the full analysis, you must transfer appropriate input files to the appro
 
 To run the analysis, you will have to edit two lines in the script `Intergenic_selection_paper/Analysis_script.sh`:
 
-* Line 
+* Line 4 - Change the variable `$base_dir` to the directory where you have cloned the repository to.
+* Line 7 - Change the species within `$species_array` to those which you want to analyse. These must be compatible with the input files.
+
+Run the analysis:
+
+```bash
+bash Analysis_script.sh
+```
