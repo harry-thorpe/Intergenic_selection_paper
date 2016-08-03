@@ -36,7 +36,7 @@ mkdir Terminator_files
 cd ..
 ```
 
-###Data files
+###Input files
 
 To run the full analysis, you must transfer appropriate input files to the appropriate directories. The analysis can be run on multiple species, but the following instructions assume you are using `My_species`.
 
