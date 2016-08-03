@@ -23,7 +23,7 @@ Move into the project base directory:
 cd Intergenic_selection_paper
 ```
 
-Move into the Data directory and create directories:
+Move into the Data directory and create input file directories:
 
 ```bash
 cd Data
@@ -44,3 +44,8 @@ To run the full analysis, you must transfer appropriate input files to the appro
 * Promoter files - These should be promoter annotation files for the reference genome used downloaded from http://pepper.molgenrug.nl/index.php/genome2d. They should be called `My_species_promoters.tab`.
 * Terminator files - These should be terminator annotation files for the reference genome used downloaded from http://pepper.molgenrug.nl/index.php/genome2d. They should be called `My_species_terminators.tab`.
 
+###Running the analysis
+
+To run the analysis, you will have to edit two lines in the script `Intergenic_selection_paper/Analysis_script.sh`:
+
+* Line 
