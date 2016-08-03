@@ -1,15 +1,9 @@
 #!/usr/bin/bash
 
-##### Start with Intergenic_variation paper, which contains
-##### two folders, Analysis, Data, and the Make_paper.sh script.
-##### Within the Analysis folder there is a folder for each
-##### analysis used in the paper. These folders contain the
-##### scripts required for doing each analysis.
-
+# Change this to reflect your own base directory.
 base_dir="/media/harry/extra/Intergenic_variation_paper"
 
-cd $base_dir
-
+# Change this to reflect your array of species.
 species_array=("S_aureus" "S_pneumoniae" "E_coli" "S_enterica" "K_pneumoniae" "M_tuberculosis")
 
 analysis_array[0]="Gene_intergenic_coordinates"
@@ -24,6 +18,8 @@ analysis_array[8]="Pairwise_dnds_dids_intergenic_annotation"
 analysis_array[9]="Mutation_intergenic_annotation"
 analysis_array[10]="Promoter"
 analysis_array[11]="Mutation_intergenic_unannotated_distance"
+
+cd $base_dir
 
 for species in ${species_array[@]}; do
 	for analysis in ${analysis_array[@]}; do
