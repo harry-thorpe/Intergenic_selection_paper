@@ -4,6 +4,7 @@ This repository contains the code for running the analysis in the paper.
 
 ##Dependencies
 
+* Linux system
 * Perl >= 5.8.3
 
 ##Instructions
