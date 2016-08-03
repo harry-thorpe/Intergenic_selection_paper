@@ -12,7 +12,7 @@ This repository contains the code for running the analysis in the paper.
 
 Clone the project into a local directory using:
 
-```
+```bash
 cd /somewhere/on/your/system
 git clone https://github.com/harry-thorpe/Intergenic_selection_paper
 ```
