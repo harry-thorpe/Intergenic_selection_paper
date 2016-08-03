@@ -41,6 +41,6 @@ To run the full analysis, you must transfer appropriate input files to the appro
 * Reference files - These should be in fasta format, with upper-case characters only (`ATGCN`), and the whole sequence on a single line. They should be called `My_species_reference.fasta`.
 * Alignment files - These should be alignments in fasta format, aligned to the reference file, with upper-case characters only (`ATGCN`), and each sequence on a single line. The first sequence in the alignment should be the reference sequence. They should be called `My_species_alignment.fasta`.
 * GFF files - These should be GFF files produced by Prokka. They should be called `My_species.gff`.
-* Promoter files - These should be promoter annotation files for the reference genome used downloaded from `http://pepper.molgenrug.nl/index.php/genome2d`. They should be called `My_species_promoters.tab`.
-* Terminator files - These should be terminator annotation files for the reference genome used downloaded from `http://pepper.molgenrug.nl/index.php/genome2d`. They should be called `My_species_terminators.tab`.
+* Promoter files - These should be promoter annotation files for the reference genome used downloaded from (http://pepper.molgenrug.nl/index.php/genome2d). They should be called `My_species_promoters.tab`.
+* Terminator files - These should be terminator annotation files for the reference genome used downloaded from (http://pepper.molgenrug.nl/index.php/genome2d). They should be called `My_species_terminators.tab`.
 
