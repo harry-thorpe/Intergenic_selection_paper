@@ -1,6 +1,12 @@
 # Intergenic selection paper
 
-This repository contains the code for running the analysis in the paper.
+This repository contains the code for running the analysis in the paper:
+
+##The large majority of intergenic sites in bacteria are selectively constrained, even when known regulatory elements are excluded
+
+Preprint available here:
+
+http://biorxiv.org/content/early/2016/08/15/069708
 
 ##Dependencies
 
