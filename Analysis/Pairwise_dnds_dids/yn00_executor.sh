@@ -32,7 +32,7 @@ do
 			cat "${base_dir}/Analysis/${analysis}/${species_analysis}/Gene_files_half_$half/$iso_1.fasta" >> "${base_dir}/Analysis/${analysis}/${species_analysis}/dnds_tmp_$half/ali.fasta"
 			cat "${base_dir}/Analysis/${analysis}/${species_analysis}/Gene_files_half_$half/$iso_2.fasta" >> "${base_dir}/Analysis/${analysis}/${species_analysis}/dnds_tmp_$half/ali.fasta"
 	
-			${base_dir}/Analysis/yn00 yn00.ctl
+			${base_dir}/Analysis/$analysis/yn00 yn00.ctl
 			
 			iso_2_regex="^""$iso_2"" \+[^ ]\+"
 			
