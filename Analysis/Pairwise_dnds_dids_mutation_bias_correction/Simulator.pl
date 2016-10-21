@@ -118,7 +118,7 @@ foreach $max_muts(@max_muts_array){
 			}
 		}
 		
-		print "Strain $y, mutation $muts completed.\n";
+		#print "Strain $y, mutation $muts completed.\n";
 	
 		print OUTPUT_GENE ">${y}_$max_muts\n";
 		for ($i=0; $i<$gene_len; $i++){
