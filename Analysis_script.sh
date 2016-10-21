@@ -10,7 +10,7 @@ if [ ! -d "$base_dir" ]; then
 	mkdir "$base_dir"
 fi
 
-cp -r "$base_code_dir/Data" "$base_dir"
+#cp -r "$base_code_dir/Data" "$base_dir"
 cp -r "$base_code_dir/Analysis" "$base_dir"
 cp "$base_code_dir/Analysis_script.sh" "$base_dir"
 chmod +x "$base_dir/Analysis/Pairwise_dnds_dids/yn00"

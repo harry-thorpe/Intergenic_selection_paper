@@ -22,7 +22,7 @@ while(<INPUT>){
 	$strand="";
 	$id="";
 	if($line !~ /^##/){
-		if($line_array[2] ne "sig_peptide" && $line_array[2] ne "misc_RNA"){
+		if($line_array[2] ne "sig_peptide" && $line_array[2] ne "misc_RNA" && $line_array[2] ne "repeat_region"){
 			$sta=$line_array[3];
 			$end=$line_array[4];
 			$type=$line_array[2];
