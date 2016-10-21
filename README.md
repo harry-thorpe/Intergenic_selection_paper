@@ -12,6 +12,7 @@ http://biorxiv.org/content/early/2016/08/15/069708
 
 * Linux system
 * Perl >= 5.8.3
+* GNU Parallel
 
 ##Instructions
 
