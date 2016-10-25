@@ -11,7 +11,7 @@ if [ ! -d "$base_dir" ]; then
 fi
 
 #cp -r "$base_code_dir/Data" "$base_dir"
-#cp -r "$base_code_dir/Analysis" "$base_dir"
+cp -r "$base_code_dir/Analysis" "$base_dir"
 cp -r "$base_code_dir/Figures" "$base_dir"
 cp "$base_code_dir/Analysis_script.sh" "$base_dir"
 chmod +x "$base_dir/Analysis/Pairwise_dnds_dids/yn00"
@@ -21,8 +21,8 @@ chmod +x "$base_dir/Analysis/Pairwise_dnds_dids_intergenic_annotation_mutation_b
 cd "$base_dir"
 
 # Change this to reflect your array of species.
-#species_array=("S_aureus" "S_pneumoniae" "E_coli" "S_enterica" "K_pneumoniae" "M_tuberculosis")
-#species_array=("test")
+species_array=("S_aureus" "S_pneumoniae" "E_coli" "S_enterica" "K_pneumoniae" "M_tuberculosis")
+#species_array=("S_aureus")
 
 #analysis_array[0]="Gene_intergenic_coordinates"
 #analysis_array[1]="Core_genome_alignment"
@@ -38,15 +38,16 @@ cd "$base_dir"
 #analysis_array[11]="Mutation_intergenic_unannotated_distance"
 #analysis_array[12]="Pairwise_dnds_dids_mutation_bias_correction"
 #analysis_array[13]="Pairwise_dnds_dids_intergenic_annotation_mutation_bias_correction"
+analysis_array[14]="Pairwise_dnds_dids_terminator_stem_loop"
 
-#for species in ${species_array[@]}; do
-#	for analysis in ${analysis_array[@]}; do
-#	
-#		cd "$base_dir/Analysis/$analysis"
-#	
-#		bash "$analysis""_analysis.sh" "$species" "$analysis" "$base_dir"
-#	done
-#done
+for species in ${species_array[@]}; do
+	for analysis in ${analysis_array[@]}; do
+	
+		cd "$base_dir/Analysis/$analysis"
+	
+		bash "$analysis""_analysis.sh" "$species" "$analysis" "$base_dir"
+	done
+done
 
 # Make figures.
 # Needs R with ggplot2, cowplot, reshape2, dplyr
@@ -62,7 +63,6 @@ cd "$base_dir/Figures"
 #Rscript "Pairwise_dnds_dids_intergenic_annotation_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Individual_genes_intergenics_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Proportion_constrained_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae"
-Rscript "Summary_cartoon_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae"
-
-
+#Rscript "Summary_cartoon_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae"
+Rscript "Pairwise_dnds_dids_terminator_stem_loop_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 
