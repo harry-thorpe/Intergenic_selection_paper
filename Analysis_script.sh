@@ -17,6 +17,8 @@ cp "$base_code_dir/Analysis_script.sh" "$base_dir"
 chmod +x "$base_dir/Analysis/Pairwise_dnds_dids/yn00"
 chmod +x "$base_dir/Analysis/Pairwise_dnds_dids_mutation_bias_correction/yn00"
 chmod +x "$base_dir/Analysis/Pairwise_dnds_dids_intergenic_annotation_mutation_bias_correction/yn00"
+chmod +x "$base_dir/Analysis/Pairwise_dnds_dids_upstream_mutation_bias_correction/yn00"
+chmod +x "$base_dir/Analysis/Pairwise_dnds_dids_terminator_stem_loop_mutation_bias_correction/yn00"
 
 cd "$base_dir"
 
@@ -38,7 +40,9 @@ species_array=("S_aureus" "S_pneumoniae" "E_coli" "S_enterica" "K_pneumoniae" "M
 #analysis_array[11]="Mutation_intergenic_unannotated_distance"
 #analysis_array[12]="Pairwise_dnds_dids_mutation_bias_correction"
 #analysis_array[13]="Pairwise_dnds_dids_intergenic_annotation_mutation_bias_correction"
-analysis_array[14]="Pairwise_dnds_dids_terminator_stem_loop"
+#analysis_array[14]="Pairwise_dnds_dids_terminator_stem_loop"
+#analysis_array[15]="Pairwise_dnds_dids_upstream_mutation_bias_correction"
+#analysis_array[16]="Pairwise_dnds_dids_terminator_stem_loop_mutation_bias_correction"
 
 for species in ${species_array[@]}; do
 	for analysis in ${analysis_array[@]}; do
@@ -64,5 +68,5 @@ cd "$base_dir/Figures"
 #Rscript "Individual_genes_intergenics_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Proportion_constrained_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae"
 #Rscript "Summary_cartoon_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae"
-Rscript "Pairwise_dnds_dids_terminator_stem_loop_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
+#Rscript "Pairwise_dnds_dids_terminator_stem_loop_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 
