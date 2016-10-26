@@ -63,14 +63,30 @@ file_base_1="/Analysis/Pairwise_dnds_dids_upstream/"
 file_base_2="_Pairwise_dnds_dids_upstream/"
 file_base_3="_dnds_dids_upstream.csv"
 
+file_base_1_1="/Analysis/Pairwise_dnds_dids_upstream_mutation_bias_correction/"
+file_base_2_2="_Pairwise_dnds_dids_upstream_mutation_bias_correction/"
+file_base_3_3="_dnds_dids_intergenic_upstream_simulated.csv"
+
 species_dnds_dids_upstream_data <- NULL
 
 for(i in 1:species_count){
   species=species_array[i]
   
+  file=paste(base_dir, file_base_1_1, species, file_base_2_2, species, file_base_3_3, sep="")
+  
+  dnds_dids_upstream_data <- read.csv(file=file, header=TRUE)
+  
+  mean_dN.dS <- mean(dnds_dids_upstream_data$dN.dS)
+  mean_dI.dS <- mean(dnds_dids_upstream_data$dI.dS)
+  mean_dI.dS_upstream_30 <- mean(dnds_dids_upstream_data$dI.dS_upstream_30)
+  
   file=paste(base_dir, file_base_1, species, file_base_2, species, file_base_3, sep="")
   
   dnds_dids_upstream_data <- read.csv(file=file, header=TRUE)
+  
+  dnds_dids_upstream_data$dN.dS <- dnds_dids_upstream_data$dN.dS/mean_dN.dS
+  dnds_dids_upstream_data$dI.dS <- dnds_dids_upstream_data$dI.dS/mean_dI.dS
+  dnds_dids_upstream_data$dI.dS_upstream_30 <- dnds_dids_upstream_data$dI.dS_upstream_30/mean_dI.dS_upstream_30
   
   rows <- nrow(dnds_dids_upstream_data)
   

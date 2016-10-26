@@ -44,14 +44,14 @@ species_array=("S_aureus" "S_pneumoniae" "E_coli" "S_enterica" "K_pneumoniae" "M
 #analysis_array[15]="Pairwise_dnds_dids_upstream_mutation_bias_correction"
 #analysis_array[16]="Pairwise_dnds_dids_terminator_stem_loop_mutation_bias_correction"
 
-for species in ${species_array[@]}; do
-	for analysis in ${analysis_array[@]}; do
-	
-		cd "$base_dir/Analysis/$analysis"
-	
-		bash "$analysis""_analysis.sh" "$species" "$analysis" "$base_dir"
-	done
-done
+#for species in ${species_array[@]}; do
+#	for analysis in ${analysis_array[@]}; do
+#	
+#		cd "$base_dir/Analysis/$analysis"
+#	
+#		bash "$analysis""_analysis.sh" "$species" "$analysis" "$base_dir"
+#	done
+#done
 
 # Make figures.
 # Needs R with ggplot2, cowplot, reshape2, dplyr
@@ -67,6 +67,6 @@ cd "$base_dir/Figures"
 #Rscript "Pairwise_dnds_dids_intergenic_annotation_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Individual_genes_intergenics_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Proportion_constrained_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae"
-#Rscript "Summary_cartoon_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae"
 #Rscript "Pairwise_dnds_dids_terminator_stem_loop_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
+Rscript "Summary_cartoon_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae"
 

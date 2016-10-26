@@ -63,9 +63,9 @@ constrained_data <- read.csv(file=file, header=TRUE, stringsAsFactors=FALSE)
 
 constrained_data$Synonymous <- 0
 
-constrained_data <- melt(constrained_data, measure.vars=c("Intergenic", "Nonsynonymous", "Synonymous"), id.vars=c("Species"), variable.name="Category", value.name="Constrained_proportion")
+constrained_data <- melt(constrained_data, measure.vars=c("Intergenic", "Nonsynonymous", "Synonymous"), id.vars=c("Species"), variable.name="Category_1", value.name="Constrained_proportion")
 
-constrained_data <- arrange(constrained_data, Species, Category)
+constrained_data <- arrange(constrained_data, Species, Category_1)
 
 constrained_data$Unconstrained_proportion <- 1 - constrained_data$Constrained_proportion
 
@@ -75,14 +75,14 @@ constrained_data$Unconstrained_sites <- as.integer(constrained_data$Unconstraine
 constrained_data$Constrained_genome_proportion <- (constrained_data$Constrained_sites / species_site_data$Genome_len)
 constrained_data$Unconstrained_genome_proportion <- (constrained_data$Unconstrained_sites / species_site_data$Genome_len)
 
-constrained_data_long_1 <- melt(constrained_data, id.vars=c("Species", "Category"), measure.vars=c("Constrained_sites", "Unconstrained_sites"), variable.name="Category_2", value.name="Sites")
+constrained_data_long_1 <- melt(constrained_data, id.vars=c("Species", "Category_1"), measure.vars=c("Constrained_sites", "Unconstrained_sites"), variable.name="Category_2", value.name="Sites")
 
 constrained_data_long_1$Category_2 <- as.character(constrained_data_long_1$Category_2)
 
 constrained_data_long_1$Category_2[constrained_data_long_1$Category_2 == "Constrained_sites"] <- "Constrained"
 constrained_data_long_1$Category_2[constrained_data_long_1$Category_2 == "Unconstrained_sites"] <- "Unconstrained"
 
-constrained_data_long_2 <- melt(constrained_data, id.vars=c("Species", "Category"), measure.vars=c("Constrained_genome_proportion", "Unconstrained_genome_proportion"), variable.name="Category_2", value.name="Genome_proportion")
+constrained_data_long_2 <- melt(constrained_data, id.vars=c("Species", "Category_1"), measure.vars=c("Constrained_genome_proportion", "Unconstrained_genome_proportion"), variable.name="Category_2", value.name="Genome_proportion")
 
 constrained_data_long_2$Category_2 <- as.character(constrained_data_long_2$Category_2)
 
@@ -93,7 +93,17 @@ constrained_data_long <- merge(constrained_data_long_1, constrained_data_long_2)
 
 constrained_data_long <- constrained_data_long[! constrained_data_long$Sites == 0, ]
 
-constrained_data_long$Category_3 <- paste(constrained_data_long$Category, constrained_data_long$Category_2, sep="_")
+constrained_data_long$Category <- paste(constrained_data_long$Category_1, constrained_data_long$Category_2, sep="_")
+
+constrained_data_long$Order <- NULL
+
+constrained_data_long$Order[constrained_data_long$Category == "Synonymous_Unconstrained"] <- 1
+constrained_data_long$Order[constrained_data_long$Category == "Nonsynonymous_Constrained"] <- 2
+constrained_data_long$Order[constrained_data_long$Category == "Nonsynonymous_Unconstrained"] <- 3
+constrained_data_long$Order[constrained_data_long$Category == "Intergenic_Constrained"] <- 4
+constrained_data_long$Order[constrained_data_long$Category == "Intergenic_Unconstrained"] <- 5
+
+constrained_data_long <- arrange(constrained_data_long, Species, Order)
 
 print(constrained_data_long)
 
@@ -104,18 +114,19 @@ print(constrained_data_long)
 species_breaks=c("E_coli", "S_aureus", "S_enterica", "S_pneumoniae", "K_pneumoniae")
 species_labels=c("E. coli", "S. aureus", "S. enterica", "S. pneumoniae", "K. pneumoniae")
 
-category_breaks=c("Synonymous_proportion", "Constrained_N_proportion_total", "Unconstrained_N_proportion_total", "Constrained_I_proportion_total", "Unconstrained_I_proportion_total")
-category_labels=c("Synonymous", "Constrained Non-synonymous", "Unconstrained Non-synonymous", "Constrained Intergenic", "Unconstrained Intergenic")
+category_values=c("Synonymous_Unconstrained"="#339900", "Nonsynonymous_Constrained"="#ff0000", "Nonsynonymous_Unconstrained"="#ff8080", "Intergenic_Constrained"="#0066ff", "Intergenic_Unconstrained"="#80b3ff")
+#category_breaks=c("Synonymous_Unconstrained", "Nonsynonymous_Constrained", "Nonsynonymous_Unconstrained", "Intergenic_Constrained", "Intergenic_Unconstrained")
+category_labels=c("Synonymous_Unconstrained"="Synonymous", "Nonsynonymous_Constrained"="Non-synonymous constrained", "Nonsynonymous_Unconstrained"="Non-synonymous unconstrained", "Intergenic_Constrained"="Intergenic constrained", "Intergenic_Unconstrained"="Intergenic unconstrained")
 
-Summary_cartoon_plot <- ggplot(constrained_data_long, aes(x=Species, y=Genome_proportion, fill=Category_3)) +
+Summary_cartoon_plot <- ggplot(constrained_data_long, aes(x=Species, y=Genome_proportion, fill=Category)) +
   geom_bar(stat="identity") +
-  geom_text(aes(y=pos, label=Sites))# +
-  #scale_x_discrete(breaks=species_breaks, labels=species_labels) +
-  #scale_fill_manual(values=c("#339900", "#ff0000", "#ff8080", "#0066ff", "#80b3ff"),
-  #                  breaks=category_breaks,
-  #                  labels=category_labels) +
-  #labs(x="Species", y="Proportion of genome") +
-  #theme(axis.text.x=element_text(face="italic"))
+  geom_text(aes(y=pos, label=Sites)) +
+  scale_x_discrete(breaks=species_breaks, labels=species_labels) +
+  scale_fill_manual(values=category_values,
+                    #breaks=category_breaks,
+                    labels=category_labels) +
+  labs(x="Species", y="Proportion of genome") +
+  theme(axis.text.x=element_text(face="italic"))
 
 #out_file_pdf <- paste(base_dir, "/Figures/Figure_4", ".pdf", sep="")
 out_file_tif <- paste(base_dir, "/Figures/Figure_4", ".tif", sep="")
@@ -126,45 +137,3 @@ tiff(file=out_file_tif, height=10, width=15, units="in", res=100)
 Summary_cartoon_plot
 
 dev.off()
-
-# Summary_data <- read.csv("/media/harry/extra/Intergenic_variation_paper/Constraint_for_figure.csv")
-# #View(Summary_data)
-# 
-# Summary_data_long <- melt(Summary_data, id.vars=c("Species", "Order"), measure.vars=c("Synonymous_proportion", "Constrained_N_proportion_total", "Unconstrained_N_proportion_total", "Constrained_I_proportion_total", "Unconstrained_I_proportion_total"), variable.name="Category", value.name="Proportion")
-# 
-# Summary_data_long_labels <- melt(Summary_data, id.vars="Species", measure.vars=c("Synonymous_sites", "Constrained_N_sites", "Unconstrained_N_sites", "Constrained_I_sites", "Unconstrained_I_sites"), variable.name="Category")
-# 
-# Summary_data_long <- cbind(Summary_data_long, Summary_data_long_labels$value)
-# 
-# names(Summary_data_long)[names(Summary_data_long) == 'Summary_data_long_labels$value'] <- 'Sites'
-# 
-# Summary_data_long$Sites <- as.integer(Summary_data_long$Sites)
-# 
-# print(Summary_data_long)
-# 
-# Summary_data_long <- ddply(Summary_data_long, .(Species), transform, pos=cumsum(Proportion) - (0.5 * Proportion))
-
-#print(Summary_data_long)
-
-# species_breaks=c("E_coli", "S_aureus", "S_enterica", "S_pneumoniae", "K_pneumoniae", "M_tuberculosis")
-# species_labels=c("E. coli", "S. aureus", "S. enterica", "S. pneumoniae", "K. pneumoniae", "M. tuberculosis")
-# 
-# category_breaks=c("Synonymous_proportion", "Constrained_N_proportion_total", "Unconstrained_N_proportion_total", "Constrained_I_proportion_total", "Unconstrained_I_proportion_total")
-# category_labels=c("Synonymous", "Constrained Non-synonymous", "Unconstrained Non-synonymous", "Constrained Intergenic", "Unconstrained Intergenic")
-# 
-# Summary_cartoon_plot <- ggplot(Summary_data_long, aes(x=reorder(Species, Order), y=Proportion, fill=Category)) +
-#   geom_bar(stat="identity") +
-#   geom_text(aes(y=pos, label=Sites)) +
-#   scale_x_discrete(breaks=species_breaks, labels=species_labels) +
-#   scale_fill_manual(values=c("#339900", "#ff0000", "#ff8080", "#0066ff", "#80b3ff"),
-#                     breaks=category_breaks,
-#                     labels=category_labels) +
-#   labs(x="Species", y="Proportion of genome") +
-#   theme(axis.text.x=element_text(face="italic"))
-# 
-# pdf(file="/media/harry/extra/Intergenic_variation_paper/Figures/Figure_4.pdf", height=10, width=15)
-# #tiff(file="/media/harry/extra/Intergenic_variation_paper/Figures/Figure_4.tif", height=10, width=15, units="in", res=100)
-# 
-# Summary_cartoon_plot
-# 
-# dev.off()

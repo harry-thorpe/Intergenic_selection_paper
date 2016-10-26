@@ -63,14 +63,34 @@ file_base_1="/Analysis/Pairwise_dnds_dids_intergenic_annotation/"
 file_base_2="_Pairwise_dnds_dids_intergenic_annotation/"
 file_base_3="_dnds_dids_intergenic_annotation.csv"
 
+file_base_1_1="/Analysis/Pairwise_dnds_dids_intergenic_annotation_mutation_bias_correction/"
+file_base_2_2="_Pairwise_dnds_dids_intergenic_annotation_mutation_bias_correction/"
+file_base_3_3="_dnds_dids_intergenic_annotation_simulated.csv"
+
 species_dnds_dids_intergenic_annotation_data <- NULL
 
 for(i in 1:species_count){
   species=species_array[i]
   
+  file=paste(base_dir, file_base_1_1, species, file_base_2_2, species, file_base_3_3, sep="")
+  
+  dnds_dids_intergenic_annotation_data <- read.csv(file=file, header=TRUE)
+  
+  mean_dN.dS <- mean(dnds_dids_intergenic_annotation_data$dN.dS)
+  mean_dI.dS_non_coding_RNA <- mean(dnds_dids_intergenic_annotation_data$dI.dS_non_coding_RNA)
+  mean_dI.dS_promoter <- mean(dnds_dids_intergenic_annotation_data$dI.dS_promoter)
+  mean_dI.dS_terminator <- mean(dnds_dids_intergenic_annotation_data$dI.dS_terminator)
+  mean_dI.dS_unannotated <- mean(dnds_dids_intergenic_annotation_data$dI.dS_unannotated)
+  
   file=paste(base_dir, file_base_1, species, file_base_2, species, file_base_3, sep="")
   
   dnds_dids_intergenic_annotation_data <- read.csv(file=file, header=TRUE)
+  
+  dnds_dids_intergenic_annotation_data$dN.dS <- dnds_dids_intergenic_annotation_data$dN.dS/mean_dN.dS
+  dnds_dids_intergenic_annotation_data$dI.dS_non_coding_RNA <- dnds_dids_intergenic_annotation_data$dI.dS_non_coding_RNA/mean_dI.dS_non_coding_RNA
+  dnds_dids_intergenic_annotation_data$dI.dS_promoter <- dnds_dids_intergenic_annotation_data$dI.dS_promoter/mean_dI.dS_promoter
+  dnds_dids_intergenic_annotation_data$dI.dS_terminator <- dnds_dids_intergenic_annotation_data$dI.dS_terminator/mean_dI.dS_terminator
+  dnds_dids_intergenic_annotation_data$dI.dS_unannotated <- dnds_dids_intergenic_annotation_data$dI.dS_unannotated/mean_dI.dS_unannotated
   
   rows <- nrow(dnds_dids_intergenic_annotation_data)
   
@@ -123,7 +143,7 @@ category_labels=c("dN/dS", "dI/dS\nNon coding RNA", "dI/dS\nPromoter", "dI/dS\nT
 pairwise_dnds_dids_intergenic_annotation_plot <- ggplot() +
   geom_boxplot(data=species_dnds_dids_intergenic_annotation_data_long_summary, aes(x=Category, y=dX.dS), outlier.size=NA) +
   geom_point(data=species_dnds_dids_intergenic_annotation_data_long_summary, aes(x=Category, y=dX.dS, colour=Category), position=position_jitter(w=0.6)) +
-  coord_cartesian(ylim=c(0, 2.1)) +
+  coord_cartesian(ylim=c(0, 4)) +
   facet_wrap(~Species, ncol=3, labeller=labeller(Species=facet_labels)) +
   scale_x_discrete(breaks=category_breaks, labels=category_labels) +
   labs(y="dX/dS") +
