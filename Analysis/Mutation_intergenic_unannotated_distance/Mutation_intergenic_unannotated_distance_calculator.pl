@@ -211,16 +211,15 @@ while(<IN_COOR>){
 
 for($i=0; $i<=$max; $i+=$step_size){
 	if(!$five_dis_snp_hash{$i}){
-		$five_density=0;
-	}else{
-		$five_density=($five_dis_snp_hash{$i}/$five_dis_site_hash{$i});
+		$five_dis_snp_hash{$i}=0;
 	}
 	
 	if(!$three_dis_snp_hash{$i}){
-		$three_density=0;
-	}else{
-		$three_density=($three_dis_snp_hash{$i}/$three_dis_site_hash{$i});
+		$three_dis_snp_hash{$i}=0;
 	}
+	
+	$five_density=($five_dis_snp_hash{$i}/$five_dis_site_hash{$i});
+	$three_density=($three_dis_snp_hash{$i}/$three_dis_site_hash{$i});
 	
 	print OUTPUT "Gene_start_5'\t$i\t$five_dis_snp_hash{$i}\t$five_dis_site_hash{$i}\t$five_density\n";
 	print OUTPUT "Gene_end_3'\t$i\t$three_dis_snp_hash{$i}\t$three_dis_site_hash{$i}\t$three_density\n";
