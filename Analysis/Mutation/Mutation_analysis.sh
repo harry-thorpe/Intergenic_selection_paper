@@ -23,3 +23,5 @@ for threshold in ${threshold_array[@]}; do
 	perl "PSM_calculator.pl" "$species" "$analysis" "$base_dir" "$threshold"
 done
 
+perl "Mutation_bias_calculator.pl" "$species" "$analysis" "$base_dir"
+
