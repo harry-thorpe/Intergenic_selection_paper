@@ -34,15 +34,16 @@ open OUTPUT_GENE, ">${base_dir}/Analysis/${analysis}/${species}_$analysis/${spec
 open OUTPUT_INT_ALL, ">${base_dir}/Analysis/${analysis}/${species}_$analysis/${species}_core_intergenic_all_alignment_simulated.fasta";
 open OUTPUT_INT_UPS, ">${base_dir}/Analysis/${analysis}/${species}_$analysis/${species}_core_intergenic_upstream_30_alignment_simulated.fasta";
 
-$inmut="${base_dir}/Analysis/${analysis}/Mutation_bias.tab";
+#$inmut="${base_dir}/Analysis/${analysis}/Mutation_bias.tab";
 #$inmut="${base_dir}/Analysis/${analysis}/Mutation_no_bias.tab";
+$inmut="${base_dir}/Analysis/Mutation/${species}_Mutation/${species}_mutation_bias.tab";
 
 $strs=10;
 
 $typecount=0;
 open INMUT, $inmut;
 while(<INMUT>){
-	if(/^(\S+)\s+(\S+)/){
+	if(/^All\s+(\S+)\s+(\S+)/){
 		$type=$1;$count=$2;
 		for $x($typecount..($typecount+($count-1))){
 			$mut{$x}=$type;
@@ -84,7 +85,7 @@ $max_muts=int(($tsites / 100) / 2);
 
 @max_muts_array=(int($max_muts*0.2), int($max_muts*0.4), int($max_muts*0.6), int($max_muts*0.8), $max_muts);
 
-print "@max_muts_array\n";
+#print "@max_muts_array\n";
 
 foreach $max_muts(@max_muts_array){
 	for $y(1..$strs){

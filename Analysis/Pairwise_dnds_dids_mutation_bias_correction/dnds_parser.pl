@@ -4,7 +4,7 @@ $species=$ARGV[0];
 $analysis=$ARGV[1];
 $base_dir=$ARGV[2];
 
-open LOG, ">>${base_dir}/Analysis/log.txt";
+#open LOG, ">>${base_dir}/Analysis/log.txt";
 
 open OUTPUT, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_dnds_simulated.csv";
 
