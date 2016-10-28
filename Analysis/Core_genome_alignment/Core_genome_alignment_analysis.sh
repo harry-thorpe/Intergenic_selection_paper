@@ -20,10 +20,6 @@ perl "Alignment_checker_core_genes.pl" "$species" "$analysis" "$base_dir"
 
 perl "Alignment_checker_core_intergenics.pl" "$species" "$analysis" "$base_dir"
 
-rm -r "./$species_analysis/${species}""_gene_files"
-
-rm -r "./$species_analysis/${species}""_intergenic_files"
-
 perl "Alignment_creator_core_genes.pl" "$species" "$analysis" "$base_dir"
 
 perl "Alignment_creator_core_intergenics.pl" "$species" "$analysis" "$base_dir"

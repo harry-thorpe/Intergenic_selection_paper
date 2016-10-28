@@ -25,7 +25,7 @@ cp "$base_dir/Analysis/$analysis/$species_analysis/${species}_core_gene_alignmen
 
 mv "$base_dir/Analysis/$analysis/$species_analysis/dnds_tmp/${species}_core_gene_alignment_simulated.fasta" "$base_dir/Analysis/$analysis/$species_analysis/dnds_tmp/ali.fasta"
 
-${base_dir}/Analysis/$analysis/yn00 yn00.ctl
+${base_dir}/Analysis/$analysis/yn00 yn00.ctl &> /dev/null
 
 cd "$base_dir/Analysis/$analysis"
 

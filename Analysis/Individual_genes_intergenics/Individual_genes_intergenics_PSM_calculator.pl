@@ -50,7 +50,7 @@ foreach $gene(@gene_array){
 	%mut_type_singleton_hash=();
 	
 	$count=0;
-	open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_core_gene_files/${gene}.fasta";
+	open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_gene_files/${gene}.fasta";
 	while(<INPUT>){
 		$line=$_;
 		chomp $line;
@@ -148,7 +148,7 @@ foreach $intergenic(@intergenic_array){
 	%mut_type_singleton_hash=();
 	
 	$count=0;
-	open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_core_intergenic_files/${intergenic}.fasta";
+	open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_intergenic_files/${intergenic}.fasta";
 	while(<INPUT>){
 		$line=$_;
 		chomp $line;

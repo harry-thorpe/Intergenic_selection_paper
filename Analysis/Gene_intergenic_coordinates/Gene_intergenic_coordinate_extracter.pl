@@ -94,7 +94,7 @@ for($i=0; $i<$gene_count; $i++){
 	
 	$int_len=(($int_end - $int_sta) + 1);
 	
-	if($int_len > 0){
+	if($int_len > 0 && $int_len < 1000){
 		$int_count++;
 		
 		$int_id="${species}_intergenic_$int_count";
