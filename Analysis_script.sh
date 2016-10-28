@@ -23,8 +23,8 @@ chmod +x "$base_dir/Analysis/Pairwise_dnds_dids_terminator_stem_loop_mutation_bi
 cd "$base_dir"
 
 # Change this to reflect your array of species.
-species_array=("S_aureus" "S_pneumoniae" "E_coli" "S_enterica" "K_pneumoniae" "M_tuberculosis")
-#species_array=("S_aureus")
+#species_array=("S_aureus" "S_pneumoniae" "E_coli" "S_enterica" "K_pneumoniae" "M_tuberculosis")
+species_array=("test")
 
 #analysis_array[0]="Gene_intergenic_coordinates"
 #analysis_array[1]="Core_genome_alignment"
