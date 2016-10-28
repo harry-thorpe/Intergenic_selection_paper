@@ -3,15 +3,22 @@
 $species=$ARGV[0];
 $analysis=$ARGV[1];
 $base_dir=$ARGV[2];
+$threshold=$ARGV[3];
 
 open LOG, ">>${base_dir}/Analysis/log.txt";
 
-open OUTPUT, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_core_gene_alignment_no_STO.fasta";
+if($threshold == 95){
+	$threshold_folder="";
+}else{
+	$threshold_folder="/threshold_$threshold";
+}
+
+open OUTPUT, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_core_gene_alignment_no_STO.fasta";
 
 %remove_sites_hash=();
 
 $count=0;
-open INGEN, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_core_gene_alignment.fasta";
+open INGEN, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment$threshold_folder/${species}_core_gene_alignment.fasta";
 while(<INGEN>){
 	if(/^>(\S+)/){
 		$id=$1;
@@ -31,7 +38,7 @@ while(<INGEN>){
 }
 
 $count=0;
-open INGEN, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_core_gene_alignment.fasta";
+open INGEN, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment$threshold_folder/${species}_core_gene_alignment.fasta";
 while(<INGEN>){
 	if(/^>(\S+)/){
 		$id=$1;

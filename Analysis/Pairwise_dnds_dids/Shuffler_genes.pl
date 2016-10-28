@@ -5,13 +5,20 @@ use List::Util qw(shuffle);
 $species=$ARGV[0];
 $analysis=$ARGV[1];
 $base_dir=$ARGV[2];
+$threshold=$ARGV[3];
 
 open LOG, ">>${base_dir}/Analysis/log.txt";
 
-open OUTPUT_A, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_core_gene_alignment_no_STO_half_a.fasta";
-open OUTPUT_B, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_core_gene_alignment_no_STO_half_b.fasta";
+if($threshold == 95){
+	$threshold_folder="";
+}else{
+	$threshold_folder="/threshold_$threshold";
+}
 
-open INPUT, "${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_core_gene_alignment_no_STO.fasta";
+open OUTPUT_A, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_core_gene_alignment_no_STO_half_a.fasta";
+open OUTPUT_B, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_core_gene_alignment_no_STO_half_b.fasta";
+
+open INPUT, "${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_core_gene_alignment_no_STO.fasta";
 while(<INPUT>){
 	if(/^([ATGCN]+)/){
 		$seq=$1;
@@ -33,7 +40,7 @@ for($i=0; $i<$no_codons; $i++){
 @shuffled_codon_array=shuffle(@codon_array);
 
 $count=0;
-open INPUT, "${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_core_gene_alignment_no_STO.fasta";
+open INPUT, "${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_core_gene_alignment_no_STO.fasta";
 while(<INPUT>){
 	if(/^>(\S+)/){
 		$id=$1;

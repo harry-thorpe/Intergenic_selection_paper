@@ -17,6 +17,18 @@ strcpy(analysis, argv[2]);
 char base_dir[arg_len];
 strcpy(base_dir, argv[3]);
 
+char threshold[arg_len];
+strcpy(threshold, argv[4]);
+
+char threshold_folder[arg_len];
+
+if(threshold[0] == '9' && threshold[1] == '5'){
+	strcpy(threshold_folder, "");
+}else{
+	strcpy(threshold_folder, "/threshold_");
+	strcat(threshold_folder, threshold);
+}
+
 char log_file_name[arg_len];
 
 // Open log file.
@@ -35,6 +47,7 @@ strcat(output_file_name, "/");
 strcat(output_file_name, species);
 strcat(output_file_name, "_");
 strcat(output_file_name, analysis);
+strcat(output_file_name, threshold_folder);
 strcat(output_file_name, "/");
 strcat(output_file_name, species);
 strcat(output_file_name, "_di.csv");
@@ -49,7 +62,8 @@ char isolates_file_name[arg_len];
 strcpy(isolates_file_name, base_dir);
 strcat(isolates_file_name, "/Analysis/Core_genome_alignment/");
 strcat(isolates_file_name, species);
-strcat(isolates_file_name, "_Core_genome_alignment/");
+strcat(isolates_file_name, "_Core_genome_alignment");
+strcat(isolates_file_name, "/");
 strcat(isolates_file_name, species);
 strcat(isolates_file_name, "_isolates.txt");
 
@@ -94,6 +108,7 @@ if(isolates_file_2 != NULL){
 		strcat(isolate_file_name_array[isolate_count], species);
 		strcat(isolate_file_name_array[isolate_count], "_");
 		strcat(isolate_file_name_array[isolate_count], analysis);
+		strcat(isolate_file_name_array[isolate_count], threshold_folder);
 		strcat(isolate_file_name_array[isolate_count], "/Intergenic_files/");
 		strcat(isolate_file_name_array[isolate_count], isolate_name);
 		strcat(isolate_file_name_array[isolate_count], ".fasta");

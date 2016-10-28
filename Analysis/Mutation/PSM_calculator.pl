@@ -3,14 +3,21 @@
 $species=$ARGV[0];
 $analysis=$ARGV[1];
 $base_dir=$ARGV[2];
+$threshold=$ARGV[3];
 
 open LOG, ">>${base_dir}/Analysis/log.txt";
 
-open OUTPUT, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_PSM.csv";
+if($threshold == 95){
+	$threshold_folder="";
+}else{
+	$threshold_folder="/threshold_$threshold";
+}
+
+open OUTPUT, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_PSM.csv";
 
 print OUTPUT "Category,Total_SNPs,Singletons,Proportion_of_Singletons\n";
 
-open OUTPUT_2, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_mutations.tab";
+open OUTPUT_2, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_mutations.tab";
 
 print OUTPUT_2 "Position\tCategory\tReference\tSNP\tReference_count\tSNP_count\tReference_isolates\tSNP_isolates\n";
 
@@ -35,7 +42,7 @@ $cod{GTA}="Val";  $cod{GCA}="Ala";  $cod{GAA}="Glu";  $cod{GGA}="Gly";
 $cod{GTG}="Val";  $cod{GCG}="Ala";  $cod{GAG}="Glu";  $cod{GGG}="Gly";
 
 $count=0;
-open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_core_gene_alignment.fasta";
+open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment$threshold_folder/${species}_core_gene_alignment.fasta";
 while(<INPUT>){
 	$line=$_;
 	chomp $line;
@@ -105,7 +112,7 @@ foreach $codon_pos(@codon_pos_array){
 @biallelic_codon_array=sort { $a <=> $b } @biallelic_codon_array;
 
 $count=0;
-open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_core_gene_alignment.fasta";
+open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment$threshold_folder/${species}_core_gene_alignment.fasta";
 while(<INPUT>){
 	$line=$_;
 	chomp $line;
@@ -181,7 +188,7 @@ foreach $codon_pos(@biallelic_codon_array){
 
 
 $count=0;
-open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_core_intergenic_alignment.fasta";
+open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment$threshold_folder/${species}_core_intergenic_alignment.fasta";
 while(<INPUT>){
 	$line=$_;
 	chomp $line;
@@ -227,7 +234,7 @@ foreach $base_pos(@base_pos_array){
 @biallelic_base_array=sort { $a <=> $b } @biallelic_base_array;
 
 $count=0;
-open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment/${species}_core_intergenic_alignment.fasta";
+open INPUT, "${base_dir}/Analysis/Core_genome_alignment/${species}_Core_genome_alignment$threshold_folder/${species}_core_intergenic_alignment.fasta";
 while(<INPUT>){
 	$line=$_;
 	chomp $line;

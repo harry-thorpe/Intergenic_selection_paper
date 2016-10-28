@@ -3,12 +3,19 @@
 $species=$ARGV[0];
 $analysis=$ARGV[1];
 $base_dir=$ARGV[2];
+$threshold=$ARGV[3];
 
 open LOG, ">>${base_dir}/Analysis/log.txt";
 
-open OUTPUT, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_dnds_dids.csv";
+if($threshold == 95){
+	$threshold_folder="";
+}else{
+	$threshold_folder="/threshold_$threshold";
+}
 
-open INPUT_DNDS, "${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_dnds_half_a.txt";
+open OUTPUT, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_dnds_dids.csv";
+
+open INPUT_DNDS, "${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_dnds_half_a.txt";
 while(<INPUT_DNDS>){
 	$line=$_;
 	chomp $line;
@@ -30,7 +37,7 @@ while(<INPUT_DNDS>){
 	}
 }
 
-open INPUT_DNDS, "${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_dnds_half_b.txt";
+open INPUT_DNDS, "${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_dnds_half_b.txt";
 while(<INPUT_DNDS>){
 	$line=$_;
 	chomp $line;
@@ -49,7 +56,7 @@ while(<INPUT_DNDS>){
 	}
 }
 
-open INPUT_DI, "${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_di.csv";
+open INPUT_DI, "${base_dir}/Analysis/${analysis}/${species}_${analysis}$threshold_folder/${species}_di.csv";
 while(<INPUT_DI>){
 	$line=$_;
 	chomp $line;

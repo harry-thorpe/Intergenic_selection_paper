@@ -12,19 +12,28 @@ fi
 
 mkdir "./$species_analysis/"
 
-perl "STO_remover_genes.pl" "$species" "$analysis" "$base_dir"
+threshold_array=("0" "95" "99")
 
-perl "Shuffler_genes.pl" "$species" "$analysis" "$base_dir"
+for threshold in ${threshold_array[@]}; do
+	
+	if [ "$threshold" -ne "95" ]; then
+		mkdir "${base_dir}/Analysis/${analysis}/${species}_${analysis}/threshold_$threshold"
+	fi
 
-perl "Alignment_splitter_gene_files.pl" "$species" "$analysis" "$base_dir"
+	perl "STO_remover_genes.pl" "$species" "$analysis" "$base_dir" "$threshold"
 
-perl "Alignment_splitter_intergenic_files.pl" "$species" "$analysis" "$base_dir"
+	perl "Shuffler_genes.pl" "$species" "$analysis" "$base_dir" "$threshold"
 
-parallel "bash yn00_executor.sh $species $analysis $base_dir {}" ::: {a..b}
+	perl "Alignment_splitter_gene_files.pl" "$species" "$analysis" "$base_dir" "$threshold"
 
-gcc Pairwise_SNP_caller_intergenic.c -o Pairwise_SNP_caller_intergenic -lm
+	perl "Alignment_splitter_intergenic_files.pl" "$species" "$analysis" "$base_dir" "$threshold"
 
-./Pairwise_SNP_caller_intergenic "$species" "$analysis" "$base_dir"
+	parallel "bash yn00_executor.sh $species $analysis $base_dir $threshold {}" ::: {a..b}
 
-perl "dnds_dids_combiner.pl" "$species" "$analysis" "$base_dir"
+	gcc Pairwise_SNP_caller_intergenic.c -o Pairwise_SNP_caller_intergenic -lm
+
+	./Pairwise_SNP_caller_intergenic "$species" "$analysis" "$base_dir" "$threshold"
+
+	perl "dnds_dids_combiner.pl" "$species" "$analysis" "$base_dir" "$threshold"
+done
 

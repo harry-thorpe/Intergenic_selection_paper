@@ -16,11 +16,20 @@ perl "Alignment_splitter_genes.pl" "$species" "$analysis" "$base_dir"
 
 perl "Alignment_splitter_intergenics.pl" "$species" "$analysis" "$base_dir"
 
-perl "Alignment_checker_core_genes.pl" "$species" "$analysis" "$base_dir"
+threshold_array=("0" "95" "99")
 
-perl "Alignment_checker_core_intergenics.pl" "$species" "$analysis" "$base_dir"
+for threshold in ${threshold_array[@]}; do
+	
+	if [ "$threshold" -ne "95" ]; then
+		mkdir "${base_dir}/Analysis/${analysis}/${species}_${analysis}/threshold_$threshold"
+	fi
 
-perl "Alignment_creator_core_genes.pl" "$species" "$analysis" "$base_dir"
+	perl "Alignment_checker_core_genes.pl" "$species" "$analysis" "$base_dir" "$threshold"
 
-perl "Alignment_creator_core_intergenics.pl" "$species" "$analysis" "$base_dir"
+	perl "Alignment_checker_core_intergenics.pl" "$species" "$analysis" "$base_dir" "$threshold"
+
+	perl "Alignment_creator_core_genes.pl" "$species" "$analysis" "$base_dir" "$threshold"
+
+	perl "Alignment_creator_core_intergenics.pl" "$species" "$analysis" "$base_dir" "$threshold"
+done
 
