@@ -42,7 +42,7 @@ analysis_array[11]="Pairwise_dnds_dids_intergenic_annotation_mutation_bias_corre
 #analysis_array[13]="Pairwise_dnds_dids_terminator_stem_loop_mutation_bias_correction"
 #analysis_array[14]="Mutation_intergenic_annotation"
 #analysis_array[15]="Promoter"
-#analysis_array[16]="Mutation_intergenic_unannotated_distance"
+analysis_array[16]="Mutation_intergenic_unannotated_distance"
 
 #analysis_array[17]="Data_QC"
 

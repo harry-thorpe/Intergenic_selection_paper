@@ -13,6 +13,21 @@ print OUTPUT "Category\tDistance\tSNPs\tSites\tSNP_density\n";
 $step_size=10;
 $max=150;
 
+open IN_RBS, "${base_dir}/Analysis/Intergenic_annotation_alignment/${species}_Intergenic_annotation_alignment/${species}_rbs_coordinates.tab";
+while(<IN_RBS>){
+	$line=$_;
+	chomp $line;
+	
+	if($line =~ /^\S+\s+(\d+)\s+(\d+)/){
+		$sta=$1;
+		$end=$2;
+		
+		for($i=$sta; $i<=$end; $i++){
+			$mask_sites_hash{$i}=1;
+		}
+	}
+}
+
 open IN_PRO, "${base_dir}/Data/Promoter_files/${species}_promoters.tab";
 while(<IN_PRO>){
 	$line=$_;
