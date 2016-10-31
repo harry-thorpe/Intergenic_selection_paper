@@ -23,6 +23,17 @@ while(<INPUT_DNDS>){
 	}
 }
 
+open INPUT_DI, "${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_rbs_di_simulated.csv";
+while(<INPUT_DI>){
+	$line=$_;
+	chomp $line;
+	@line_array=split(/,/, $line);
+	
+	if($line !~ /^Isolate_1,Isolate_2/){
+		push @di_rbs_array, $line_array[4];
+	}
+}
+
 open INPUT_DI, "${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_non_coding_RNA_di_simulated.csv";
 while(<INPUT_DI>){
 	$line=$_;
@@ -71,11 +82,13 @@ $array_len=scalar(@di_una_array);
 
 for($i=0; $i<$array_len; $i++){
 	if($ds_array[$i] > 0){
+		$dids_rbs_array[$i]=($di_rbs_array[$i]/$ds_array[$i]);
 		$dids_pro_array[$i]=($di_pro_array[$i]/$ds_array[$i]);
 		$dids_ter_array[$i]=($di_ter_array[$i]/$ds_array[$i]);
 		$dids_rna_array[$i]=($di_rna_array[$i]/$ds_array[$i]);
 		$dids_una_array[$i]=($di_una_array[$i]/$ds_array[$i]);
 	}else{
+		$dids_rbs_array[$i]="NA";
 		$dids_pro_array[$i]="NA";
 		$dids_ter_array[$i]="NA";
 		$dids_rna_array[$i]="NA";
@@ -84,11 +97,11 @@ for($i=0; $i<$array_len; $i++){
 	}
 }
 
-print OUTPUT "Isolate_1,Isolate_2,dN/dS,dI/dS_promoter,dI/dS_terminator,dI/dS_non_coding_RNA,dI/dS_unannotated,dS\n";
+print OUTPUT "Isolate_1,Isolate_2,dN/dS,dI/dS_rbs,dI/dS_promoter,dI/dS_terminator,dI/dS_non_coding_RNA,dI/dS_unannotated,dS\n";
 
 for($i=0; $i<$array_len; $i++){
 	if(!$zero_ds_hash{$i}){
-		print OUTPUT "$isolate_1_array[$i],$isolate_2_array[$i],$dnds_array[$i],$dids_pro_array[$i],$dids_ter_array[$i],$dids_rna_array[$i],$dids_una_array[$i],$ds_array[$i]\n";
+		print OUTPUT "$isolate_1_array[$i],$isolate_2_array[$i],$dnds_array[$i],$dids_rbs_array[$i],$dids_pro_array[$i],$dids_ter_array[$i],$dids_rna_array[$i],$dids_una_array[$i],$ds_array[$i]\n";
 	}
 }
 

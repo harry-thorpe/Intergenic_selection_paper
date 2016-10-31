@@ -16,8 +16,8 @@ perl "Alignment_splitter_intergenic_annotation_files.pl" "$species" "$analysis" 
 
 gcc Pairwise_SNP_caller_intergenic_annotation.c -o Pairwise_SNP_caller_intergenic_annotation -lm
 
-category_array=("Promoter" "Terminator" "Non_coding_RNA" "Unannotated")
-category_file_array=("promoter" "terminator" "non_coding_RNA" "unannotated")
+category_array=("rbs" "Promoter" "Terminator" "Non_coding_RNA" "Unannotated")
+category_file_array=("rbs" "promoter" "terminator" "non_coding_RNA" "unannotated")
 
 category_count=${#category_array[@]}
 

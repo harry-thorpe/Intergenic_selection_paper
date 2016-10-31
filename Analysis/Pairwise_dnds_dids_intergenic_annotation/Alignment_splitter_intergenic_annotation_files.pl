@@ -6,7 +6,7 @@ $base_dir=$ARGV[2];
 
 open LOG, ">>${base_dir}/Analysis/log.txt";
 
-@category_array=("promoter", "terminator", "non_coding_RNA", "unannotated");
+@category_array=("rbs", "promoter", "terminator", "non_coding_RNA", "unannotated");
 
 $category_count=scalar(@category_array);
 

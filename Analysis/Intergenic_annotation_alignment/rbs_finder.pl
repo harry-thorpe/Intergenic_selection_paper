@@ -267,11 +267,11 @@ while(<COORD_FILE>){
     
 
 $total_orfs=$no_rbs+$rbs_original+$rbs_relocated;
-print "Summary:\n";
-printf("# of orfs that have RBS before original start codon loc= %d \-\> %4.2f\%\n",$rbs_original,$rbs_original*100/$total_orfs); 
-printf("# of orfs that have RBS before new start codon loc= %d \-\> %4.2f\%\n",$rbs_relocated,$rbs_relocated*100/$total_orfs); 
-printf("# of orfs that have no RBS= %d \-\>  %4.2f\%\n",$no_rbs,$no_rbs*100/$total_orfs); 
-print "Total # of orfs: $total_orfs\n";
+#print "Summary:\n";
+#printf("# of orfs that have RBS before original start codon loc= %d \-\> %4.2f\%\n",$rbs_original,$rbs_original*100/$total_orfs); 
+#printf("# of orfs that have RBS before new start codon loc= %d \-\> %4.2f\%\n",$rbs_relocated,$rbs_relocated*100/$total_orfs); 
+#printf("# of orfs that have no RBS= %d \-\>  %4.2f\%\n",$no_rbs,$no_rbs*100/$total_orfs); 
+#print "Total # of orfs: $total_orfs\n";
 #print "Upstream $upstream $upstreamreloc\n";
 
 sub next_start_coord_fw

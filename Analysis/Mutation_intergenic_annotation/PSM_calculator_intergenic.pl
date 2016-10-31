@@ -33,6 +33,23 @@ while(<IN_COOR>){
 	}
 }
 
+open IN_RBS, "${base_dir}/Analysis/Intergenic_annotation_alignment/${species}_Intergenic_annotation_alignment/${species}_rbs_coordinates.tab";
+while(<IN_RBS>){
+	$line=$_;
+	chomp $line;
+	
+	if($line =~ /^\S+\s+(\d+)\s+(\d+)/){
+		$sta=$1;
+		$end=$2;
+		$sta=($sta-1);
+		$end=($end-1);
+		
+		for($i=$sta; $i<=$end; $i++){
+			$rbs_hash{$i}=1;
+		}
+	}
+}
+
 open IN_PRO, "${base_dir}/Data/Promoter_files/${species}_promoters.tab";
 while(<IN_PRO>){
 	$line=$_;
@@ -158,9 +175,22 @@ while(<INGEN>){
 	
 		foreach $i(@biallelic_sites_array){
 			if($seq_array[$i] !~ /N/){
-				if($intergenic_hash{$i} && !$pro_hash{$i} && !$ter_hash{$i} && !$rna_hash{$i}){
+				if($intergenic_hash{$i} && !$rbs_hash{$i} && !$pro_hash{$i} && !$ter_hash{$i} && !$rna_hash{$i}){
 					
 					$mut="Unannotated";
+					
+					$base_hash{$mut}{$i}{$seq_array[$i]}++;
+					
+					if(!$base_isolate_hash{$mut}{$i}{$seq_array[$i]}){
+						$base_isolate_hash{$mut}{$i}{$seq_array[$i]}=$id;
+					}else{
+						$base_isolate_hash{$mut}{$i}{$seq_array[$i]}="$base_isolate_hash{$mut}{$i}{$seq_array[$i]},$id";
+					}
+				}
+				
+				if($intergenic_hash{$i} && $rbs_hash{$i}){
+					
+					$mut="rbs";
 					
 					$base_hash{$mut}{$i}{$seq_array[$i]}++;
 					
@@ -217,7 +247,7 @@ while(<INGEN>){
 	}
 }
 
-@category_array=("Non_coding_RNA", "Promoter", "Terminator", "Unannotated");
+@category_array=("rbs", "Non_coding_RNA", "Promoter", "Terminator", "Unannotated");
 
 foreach $category(@category_array){
 

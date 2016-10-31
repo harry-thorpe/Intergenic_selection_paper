@@ -27,12 +27,14 @@ $cod{GTG}="Val";  $cod{GCG}="Ala";  $cod{GAG}="Glu";  $cod{GGG}="Gly";
 open LOG, ">>${base_dir}/Analysis/log.txt";
 
 $in_gene_file="${base_dir}/Analysis/Pairwise_dnds_dids/${species}_Pairwise_dnds_dids/${species}_core_gene_alignment_no_STO.fasta";
+$in_int_rbs_file="${base_dir}/Analysis/Intergenic_annotation_alignment/${species}_Intergenic_annotation_alignment/${species}_core_intergenic_rbs_alignment.fasta";
 $in_int_rna_file="${base_dir}/Analysis/Intergenic_annotation_alignment/${species}_Intergenic_annotation_alignment/${species}_core_intergenic_non_coding_RNA_alignment.fasta";
 $in_int_pro_file="${base_dir}/Analysis/Intergenic_annotation_alignment/${species}_Intergenic_annotation_alignment/${species}_core_intergenic_promoter_alignment.fasta";
 $in_int_ter_file="${base_dir}/Analysis/Intergenic_annotation_alignment/${species}_Intergenic_annotation_alignment/${species}_core_intergenic_terminator_alignment.fasta";
 $in_int_una_file="${base_dir}/Analysis/Intergenic_annotation_alignment/${species}_Intergenic_annotation_alignment/${species}_core_intergenic_unannotated_alignment.fasta";
 
 open OUTPUT_GENE, ">${base_dir}/Analysis/${analysis}/${species}_$analysis/${species}_core_gene_alignment_simulated.fasta";
+open OUTPUT_INT_RBS, ">${base_dir}/Analysis/${analysis}/${species}_$analysis/${species}_core_intergenic_rbs_alignment_simulated.fasta";
 open OUTPUT_INT_RNA, ">${base_dir}/Analysis/${analysis}/${species}_$analysis/${species}_core_intergenic_non_coding_RNA_alignment_simulated.fasta";
 open OUTPUT_INT_PRO, ">${base_dir}/Analysis/${analysis}/${species}_$analysis/${species}_core_intergenic_promoter_alignment_simulated.fasta";
 open OUTPUT_INT_TER, ">${base_dir}/Analysis/${analysis}/${species}_$analysis/${species}_core_intergenic_terminator_alignment_simulated.fasta";
@@ -62,6 +64,14 @@ while(<INPUT>){
 	if(/^([ATGCN]+)/){
 		$gene_seq=$1;
 		$gene_len=length($gene_seq);
+		last;
+	}
+}
+open INPUT, $in_int_rbs_file;
+while(<INPUT>){
+	if(/^([ATGCN]+)/){
+		$int_rbs_seq=$1;
+		$int_rbs_len=length($int_rbs_seq);
 		last;
 	}
 }
@@ -98,7 +108,7 @@ while(<INPUT>){
 	}
 }
 
-$seq="$gene_seq$int_rna_seq$int_pro_seq$int_ter_seq$int_una_seq";
+$seq="$gene_seq$int_rbs_seq$int_rna_seq$int_pro_seq$int_ter_seq$int_una_seq";
 $tsites=length($seq);
 
 $max_muts=int(($tsites / 100) / 2);
@@ -158,6 +168,14 @@ foreach $max_muts(@max_muts_array){
 			print OUTPUT_GENE "$mutseq[$i]";
 		}
 		print OUTPUT_GENE "\n";
+		
+		$min=$max;
+		$max=$max+$int_rbs_len;
+		print OUTPUT_INT_RBS ">${y}_$max_muts\n";
+		for ($i=$min; $i<$max; $i++){
+			print OUTPUT_INT_RBS "$mutseq[$i]";
+		}
+		print OUTPUT_INT_RBS "\n";
 		
 		$min=$max;
 		$max=$max+$int_rna_len;
