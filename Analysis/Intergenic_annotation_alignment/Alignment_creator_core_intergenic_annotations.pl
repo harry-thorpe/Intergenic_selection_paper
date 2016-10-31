@@ -140,7 +140,7 @@ while(<INGEN>){
 				print OUTPUT_PRO "$seq_array[$i]";
 			}elsif($intergenic_hash{$i} && $rna_hash{$i}){
 				print OUTPUT_RNA "$seq_array[$i]";
-			}elsif($intergenic_hash{$i} && !$ter_hash{$i} && !$pro_hash{$i} && !$rna_hash{$i}){
+			}elsif($intergenic_hash{$i} && !$rbs_hash{$i} && !$ter_hash{$i} && !$pro_hash{$i} && !$rna_hash{$i}){
 				print OUTPUT_UNA "$seq_array[$i]";
 			}
 		}
