@@ -132,7 +132,7 @@ while(<INPUT>){
 @cat_array=keys(%snp_hash);
 @cat_array=sort(@cat_array);
 
-@type_array=keys($snp_hash{$cat_array[0]});
+@type_array=keys(%{$snp_hash{$cat_array[0]}});
 @type_array=sort(@type_array);
 
 foreach $cat(@cat_array){

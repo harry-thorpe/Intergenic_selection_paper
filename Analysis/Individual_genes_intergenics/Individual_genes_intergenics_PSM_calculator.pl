@@ -80,7 +80,7 @@ foreach $gene(@gene_array){
 	@codon_pos_array=sort { $a <=> $b } @codon_pos_array;
 
 	foreach $codon_pos(@codon_pos_array){
-		@codon_array=sort { $codon_hash{$codon_pos}{$b} <=> $codon_hash{$codon_pos}{$a} } keys($codon_hash{$codon_pos});
+		@codon_array=sort { $codon_hash{$codon_pos}{$b} <=> $codon_hash{$codon_pos}{$a} } keys(%{$codon_hash{$codon_pos}});
 	
 		$codon_count=scalar(@codon_array);
 	
@@ -179,7 +179,7 @@ foreach $intergenic(@intergenic_array){
 
 
 	foreach $base_pos(@base_pos_array){
-		@base_array=sort { $base_hash{$base_pos}{$b} <=> $base_hash{$base_pos}{$a} } keys($base_hash{$base_pos});
+		@base_array=sort { $base_hash{$base_pos}{$b} <=> $base_hash{$base_pos}{$a} } keys(%{$base_hash{$base_pos}});
 
 		$base_count=scalar(@base_array);
 
