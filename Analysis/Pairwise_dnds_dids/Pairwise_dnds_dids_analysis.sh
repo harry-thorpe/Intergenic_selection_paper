@@ -28,7 +28,7 @@ for threshold in ${threshold_array[@]}; do
 
 	perl "Alignment_splitter_intergenic_files.pl" "$species" "$analysis" "$base_dir" "$threshold"
 
-	parallel "bash yn00_executor.sh $species $analysis $base_dir $threshold {}" ::: {a..b}
+	parallel --no-notice "bash yn00_executor.sh $species $analysis $base_dir $threshold {}" ::: {a..b}
 
 	gcc Pairwise_SNP_caller_intergenic.c -o Pairwise_SNP_caller_intergenic -lm
 

@@ -55,7 +55,7 @@ $id_count=scalar(@id_array);
 $dnds_count=scalar(@dnds_array);
 
 if((($id_count * ($id_count - 1)) / 2) == ($dnds_count / 3)){
-	print "all good\n";
+	#print "all good\n";
 	
 	$count=0;
 	for($i=0; $i<$id_count; $i++){

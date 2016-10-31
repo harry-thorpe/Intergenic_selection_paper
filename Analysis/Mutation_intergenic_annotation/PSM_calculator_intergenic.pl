@@ -132,7 +132,7 @@ while(<INGEN>){
 
 @biallelic_sites_array=();
 foreach $base_pos(@base_pos_array){
-	@base_array=sort { $base_hash{$base_pos}{$b} <=> $base_hash{$base_pos}{$a} } keys($base_hash{$base_pos});
+	@base_array=sort { $base_hash{$base_pos}{$b} <=> $base_hash{$base_pos}{$a} } keys(%{$base_hash{$base_pos}});
 
 	$base_count=scalar(@base_array);
 
@@ -221,11 +221,11 @@ while(<INGEN>){
 
 foreach $category(@category_array){
 
-	@base_pos_array=keys($base_hash{$category});
+	@base_pos_array=keys(%{$base_hash{$category}});
 	@base_pos_array=sort { $a <=> $b } @base_pos_array;
 
 	foreach $base_pos(@base_pos_array){
-		@base_array=sort { $base_hash{$category}{$base_pos}{$b} <=> $base_hash{$category}{$base_pos}{$a} } keys($base_hash{$category}{$base_pos});
+		@base_array=sort { $base_hash{$category}{$base_pos}{$b} <=> $base_hash{$category}{$base_pos}{$a} } keys(%{$base_hash{$category}{$base_pos}});
 
 		$base_count=scalar(@base_array);
 

@@ -18,7 +18,7 @@ IFS=$'\n' read -d '' -r -a isolate_array < "${base_dir}/Analysis/Core_genome_ali
 
 isolate_count=${#isolate_array[@]}
 
-echo $isolate_count
+#echo $isolate_count
 
 mkdir "${base_dir}/Analysis/${analysis}/${species_analysis}${threshold_folder}/dnds_tmp_$half"
 
