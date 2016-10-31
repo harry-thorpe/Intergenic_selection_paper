@@ -4,6 +4,9 @@ $species=$ARGV[0];
 $analysis=$ARGV[1];
 $base_dir=$ARGV[2];
 
+open LOG, ">>${base_dir}/Analysis/log.txt";
+
+open OUTPUT_RBS, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_core_intergenic_rbs_alignment.fasta";
 open OUTPUT_TER, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_core_intergenic_terminator_alignment.fasta";
 open OUTPUT_PRO, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_core_intergenic_promoter_alignment.fasta";
 open OUTPUT_RNA, ">${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_core_intergenic_non_coding_RNA_alignment.fasta";
@@ -21,6 +24,40 @@ while(<IN_COOR>){
 			for($i=$sta; $i<=$end; $i++){
 				$intergenic_hash{$i}=1;
 			}
+		}
+	}
+}
+
+open IN_RBS, "${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_rbs_coordinates.tab";
+while(<IN_RBS>){
+	$line=$_;
+	chomp $line;
+	
+	if($line =~ /^\S+\s+(\d+)\s+(\d+)/){
+		$sta=$1;
+		$end=$2;
+		$sta=($sta-1);
+		$end=($end-1);
+		
+		for($i=$sta; $i<=$end; $i++){
+			$rbs_hash{$i}=1;
+		}
+	}
+}
+
+open IN_TER, "${base_dir}/Data/Terminator_files/${species}_terminators.tab";
+while(<IN_TER>){
+	$line=$_;
+	chomp $line;
+	
+	if($line =~ /\S+\s+(\d+)\s+\.\.\s+(\d+)/){
+		$sta=$1;
+		$end=$2;
+		$sta=($sta-1);
+		$end=($end-1);
+		
+		for($i=$sta; $i<=$end; $i++){
+			$ter_hash{$i}=1;
 		}
 	}
 }
@@ -49,24 +86,6 @@ while(<IN_PRO>){
 		}
 	}
 }
-
-open IN_TER, "${base_dir}/Data/Terminator_files/${species}_terminators.tab";
-while(<IN_TER>){
-	$line=$_;
-	chomp $line;
-	
-	if($line =~ /\S+\s+(\d+)\s+\.\.\s+(\d+)/){
-		$sta=$1;
-		$end=$2;
-		$sta=($sta-1);
-		$end=($end-1);
-		
-		for($i=$sta; $i<=$end; $i++){
-			$ter_hash{$i}=1;
-		}
-	}
-}
-
 
 open IN_RNA, "${base_dir}/Data/GFF_files/$species.gff";
 while(<IN_RNA>){
@@ -102,6 +121,7 @@ while(<INGEN>){
 	if($line =~ /^>(\S+)/){
 		$id=$1;
 		
+		print OUTPUT_RBS ">$id\n";
 		print OUTPUT_TER ">$id\n";
 		print OUTPUT_PRO ">$id\n";
 		print OUTPUT_RNA ">$id\n";
@@ -112,7 +132,9 @@ while(<INGEN>){
 		$genome_len=length($seq);
 		
 		for($i=0; $i<$genome_len; $i++){
-			if($intergenic_hash{$i} && $ter_hash{$i}){
+			if($intergenic_hash{$i} && $rbs_hash{$i}){
+				print OUTPUT_RBS "$seq_array[$i]";
+			}elsif($intergenic_hash{$i} && $ter_hash{$i}){
 				print OUTPUT_TER "$seq_array[$i]";
 			}elsif($intergenic_hash{$i} && $pro_hash{$i}){
 				print OUTPUT_PRO "$seq_array[$i]";
@@ -123,6 +145,7 @@ while(<INGEN>){
 			}
 		}
 		
+		print OUTPUT_RBS "\n";
 		print OUTPUT_TER "\n";
 		print OUTPUT_PRO "\n";
 		print OUTPUT_RNA "\n";
@@ -134,4 +157,6 @@ while(<INGEN>){
 }
 
 print "$species intergenic annotation alignments created.\n";
+
+print LOG "$species intergenic annotation alignments created.\n";
 
