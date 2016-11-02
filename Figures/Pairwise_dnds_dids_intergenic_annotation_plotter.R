@@ -77,6 +77,7 @@ for(i in 1:species_count){
   dnds_dids_intergenic_annotation_data <- read.csv(file=file, header=TRUE)
   
   mean_dN.dS <- mean(dnds_dids_intergenic_annotation_data$dN.dS)
+  mean_dI.dS_rbs <- mean(dnds_dids_intergenic_annotation_data$dI.dS_rbs)
   mean_dI.dS_non_coding_RNA <- mean(dnds_dids_intergenic_annotation_data$dI.dS_non_coding_RNA)
   mean_dI.dS_promoter <- mean(dnds_dids_intergenic_annotation_data$dI.dS_promoter)
   mean_dI.dS_terminator <- mean(dnds_dids_intergenic_annotation_data$dI.dS_terminator)
@@ -87,6 +88,7 @@ for(i in 1:species_count){
   dnds_dids_intergenic_annotation_data <- read.csv(file=file, header=TRUE)
   
   dnds_dids_intergenic_annotation_data$dN.dS <- dnds_dids_intergenic_annotation_data$dN.dS/mean_dN.dS
+  dnds_dids_intergenic_annotation_data$dI.dS_rbs <- dnds_dids_intergenic_annotation_data$dI.dS_rbs/mean_dI.dS_rbs
   dnds_dids_intergenic_annotation_data$dI.dS_non_coding_RNA <- dnds_dids_intergenic_annotation_data$dI.dS_non_coding_RNA/mean_dI.dS_non_coding_RNA
   dnds_dids_intergenic_annotation_data$dI.dS_promoter <- dnds_dids_intergenic_annotation_data$dI.dS_promoter/mean_dI.dS_promoter
   dnds_dids_intergenic_annotation_data$dI.dS_terminator <- dnds_dids_intergenic_annotation_data$dI.dS_terminator/mean_dI.dS_terminator
@@ -101,7 +103,7 @@ for(i in 1:species_count){
   species_dnds_dids_intergenic_annotation_data <- rbind(species_dnds_dids_intergenic_annotation_data, dnds_dids_intergenic_annotation_data)
 }
 
-species_dnds_dids_intergenic_annotation_data_long <- melt(species_dnds_dids_intergenic_annotation_data, measure.vars=c("dN.dS", "dI.dS_non_coding_RNA", "dI.dS_promoter", "dI.dS_terminator", "dI.dS_unannotated"), variable.name="Category", value.name="dX.dS")
+species_dnds_dids_intergenic_annotation_data_long <- melt(species_dnds_dids_intergenic_annotation_data, measure.vars=c("dN.dS", "dI.dS_rbs", "dI.dS_non_coding_RNA", "dI.dS_promoter", "dI.dS_terminator", "dI.dS_unannotated"), variable.name="Category", value.name="dX.dS")
 
 species_dnds_dids_intergenic_annotation_data_long$dS_bin <- cut(species_dnds_dids_intergenic_annotation_data_long$dS, breaks=seq(0, 0.1, 0.0001), labels=seq(0.0001, 0.1, 0.0001))
 
@@ -137,8 +139,8 @@ wilcox.test(species_dnds_dids_intergenic_annotation_data_long_summary_wide_K_pne
 wilcox.test(species_dnds_dids_intergenic_annotation_data_long_summary_wide_M_tuberculosis$dI.dS_promoter, species_dnds_dids_intergenic_annotation_data_long_summary_wide_M_tuberculosis$dI.dS_terminator, alternative="less")
 
 facet_labels=c(E_coli="E. coli", S_aureus="S. aureus", S_enterica="S. enterica", S_pneumoniae="S. pneumoniae", K_pneumoniae="K. pneumoniae", M_tuberculosis="M. tuberculosis")
-category_breaks=c("dN.dS", "dI.dS_non_coding_RNA", "dI.dS_promoter", "dI.dS_terminator", "dI.dS_unannotated")
-category_labels=c("dN/dS", "dI/dS\nNon coding RNA", "dI/dS\nPromoter", "dI/dS\nTerminator", "dI/dS\nUnannotated")
+category_breaks=c("dN.dS", "dI.dS_rbs", "dI.dS_non_coding_RNA", "dI.dS_promoter", "dI.dS_terminator", "dI.dS_unannotated")
+category_labels=c("dN/dS", "dI/dS\nRBS", "dI/dS\nNon coding RNA", "dI/dS\nPromoter", "dI/dS\nTerminator", "dI/dS\nUnannotated")
 
 pairwise_dnds_dids_intergenic_annotation_plot <- ggplot() +
   geom_boxplot(data=species_dnds_dids_intergenic_annotation_data_long_summary, aes(x=Category, y=dX.dS), outlier.size=NA) +

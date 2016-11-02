@@ -84,19 +84,21 @@ for(i in 1:species_count){
   
   PSM_intergenic_annotation_data_wide_Non_singletons <- dcast(PSM_intergenic_annotation_data, Species ~ Category, value.var="Non_singletons")
   
-  S <- c(rep("S_Unannotated", PSM_intergenic_annotation_data_wide_Singletons$Unannotated), rep("S_Promoter", PSM_intergenic_annotation_data_wide_Singletons$Promoter), rep("S_Terminator", PSM_intergenic_annotation_data_wide_Singletons$Terminator), rep("S_Non_coding_RNA", PSM_intergenic_annotation_data_wide_Singletons$Non_coding_RNA))
-  N <- c(rep("N_Unannotated", PSM_intergenic_annotation_data_wide_Non_singletons$Unannotated), rep("N_Promoter", PSM_intergenic_annotation_data_wide_Non_singletons$Promoter), rep("N_Terminator", PSM_intergenic_annotation_data_wide_Non_singletons$Terminator), rep("N_Non_coding_RNA", PSM_intergenic_annotation_data_wide_Non_singletons$Non_coding_RNA))
+  S <- c(rep("S_rbs", PSM_intergenic_annotation_data_wide_Singletons$rbs), rep("S_Unannotated", PSM_intergenic_annotation_data_wide_Singletons$Unannotated), rep("S_Promoter", PSM_intergenic_annotation_data_wide_Singletons$Promoter), rep("S_Terminator", PSM_intergenic_annotation_data_wide_Singletons$Terminator), rep("S_Non_coding_RNA", PSM_intergenic_annotation_data_wide_Singletons$Non_coding_RNA))
+  N <- c(rep("N_rbs", PSM_intergenic_annotation_data_wide_Non_singletons$rbs), rep("N_Unannotated", PSM_intergenic_annotation_data_wide_Non_singletons$Unannotated), rep("N_Promoter", PSM_intergenic_annotation_data_wide_Non_singletons$Promoter), rep("N_Terminator", PSM_intergenic_annotation_data_wide_Non_singletons$Terminator), rep("N_Non_coding_RNA", PSM_intergenic_annotation_data_wide_Non_singletons$Non_coding_RNA))
   
   NS <- c(N, S)
   
+  rbs <- NULL
   Unannotated <- NULL
   Promoter <- NULL
   Terminator <- NULL
   Non_coding_RNA <- NULL
   
-  for(rep in 1:10){
+  for(rep in 1:20){
     rep_NS <- sample(NS, size=length(NS), replace=TRUE)
     
+    rbs[rep] <- length(grep("S_rbs", rep_NS)) / (length(grep("S_rbs", rep_NS)) + length(grep("N_rbs", rep_NS)))
     Unannotated[rep] <- length(grep("S_Unannotated", rep_NS)) / (length(grep("S_Unannotated", rep_NS)) + length(grep("N_Unannotated", rep_NS)))
     Promoter[rep] <- length(grep("S_Promoter", rep_NS)) / (length(grep("S_Promoter", rep_NS)) + length(grep("N_Promoter", rep_NS)))
     Terminator[rep] <- length(grep("S_Terminator", rep_NS)) / (length(grep("S_Terminator", rep_NS)) + length(grep("N_Terminator", rep_NS)))
@@ -107,7 +109,7 @@ for(i in 1:species_count){
   
   Species <- rep(species, rows)
   
-  resampled_PSM_intergenic_annotation_data <- data.frame(Species, Unannotated, Promoter, Terminator, Non_coding_RNA)
+  resampled_PSM_intergenic_annotation_data <- data.frame(Species, Unannotated, Promoter, Terminator, Non_coding_RNA, rbs)
   
   species_PSM_intergenic_annotation_data <- rbind(species_PSM_intergenic_annotation_data, resampled_PSM_intergenic_annotation_data)
 }
@@ -127,14 +129,16 @@ for(i in 1:row_count){
     species_PSM_intergenic_annotation_data$Order[i] <- 3
   }else if(species_PSM_intergenic_annotation_data$Category[i] == "Non_coding_RNA"){
     species_PSM_intergenic_annotation_data$Order[i] <- 4
+  }else if(species_PSM_intergenic_annotation_data$Category[i] == "rbs"){
+    species_PSM_intergenic_annotation_data$Order[i] <- 5
   }
 }
 
 species_PSM_intergenic_annotation_data_summary <- summarySE(species_PSM_intergenic_annotation_data, groupvars=c("Species", "Category", "Order"), measurevar="PSM")
 
 facet_labels=c(E_coli="E. coli", S_aureus="S. aureus", S_enterica="S. enterica", S_pneumoniae="S. pneumoniae", K_pneumoniae="K. pneumoniae", M_tuberculosis="M. tuberculosis")
-category_breaks=c("Non_coding_RNA", "Promoter", "Terminator", "Unannotated")
-category_labels=c("Non coding RNA", "Promoter", "Terminator", "Unannotated")
+category_breaks=c("rbs", "Non_coding_RNA", "Promoter", "Terminator", "Unannotated")
+category_labels=c("RBS", "Non coding RNA", "Promoter", "Terminator", "Unannotated")
 
 PSM_intergenic_annotation_plot <- ggplot(species_PSM_intergenic_annotation_data_summary, aes(x=reorder(Category, Order), y=PSM, fill=Category)) +
   geom_bar(stat="identity") +

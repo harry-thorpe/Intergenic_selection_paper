@@ -47,11 +47,12 @@ mutation_labels=c("A->C\nor\nT->G", "A->G\nor\nT->C", "A->T\nor\nT->A", "C->A\no
 
 facet_labels=c(E_coli="E. coli", S_aureus="S. aureus", S_enterica="S. enterica", S_pneumoniae="S. pneumoniae", K_pneumoniae="K. pneumoniae", M_tuberculosis="M. tuberculosis")
 
-mutation_bias_plot <- ggplot(species_mutation_bias_data, aes(x=Mutation, y=Count, fill=Category)) +
+mutation_bias_plot <- ggplot(species_mutation_bias_data, aes(x=Mutation, y=Count)) +
   geom_bar(stat="identity", position="dodge") +
   scale_x_discrete(breaks=mutation_breaks, labels=mutation_labels) +
   facet_wrap(~Species, ncol=3, labeller=labeller(Species=facet_labels)) +
-  theme(strip.text.x=element_text(face="italic"))
+  theme(legend.position="none",
+        strip.text.x=element_text(face="italic"))
 
 #out_file_pdf <- paste(base_dir, "/Figures/Figure_S9", ".pdf", sep="")
 out_file_tif <- paste(base_dir, "/Figures/Figure_S9", ".tif", sep="")

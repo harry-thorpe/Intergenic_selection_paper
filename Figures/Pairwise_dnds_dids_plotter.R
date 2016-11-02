@@ -162,20 +162,82 @@ dev.off()
 
 #####
 
+species_count=length(species_array)
+
+file_base_1="/Analysis/Pairwise_dnds_dids/"
+file_base_2="_Pairwise_dnds_dids/"
+file_base_3="_dnds_dids.csv"
+
+file_base_1_1="/Analysis/Pairwise_dnds_dids_mutation_bias_correction/"
+file_base_2_2="_Pairwise_dnds_dids_mutation_bias_correction/"
+file_base_3_3="_dnds_dids_simulated.csv"
+
+threshold_array <- c("threshold_0/", "", "threshold_99/")
+threshold_breaks <- c("relaxed_core", "core", "strict_core")
+threshold_labels <- c("Relaxed core", "Core", "Strict core")
+
+threshold_count <- length(threshold_array)
+
+species_dnds_dids_data <- NULL
+
+for(i in 1:species_count){
+  species=species_array[i]
+  
+  for(j in 1:threshold_count){
+    
+    file=paste(base_dir, file_base_1_1, species, file_base_2_2, species, file_base_3_3, sep="")
+    
+    dnds_dids_data <- read.csv(file=file, header=TRUE)
+    
+    mean_dN.dS <- mean(dnds_dids_data$dN.dS)
+    mean_dI.dS <- mean(dnds_dids_data$dI.dS)
+    
+    file=paste(base_dir, file_base_1, species, file_base_2, threshold_array[j], species, file_base_3, sep="")
+    
+    dnds_dids_data <- read.csv(file=file, header=TRUE)
+    
+    dnds_dids_data$dN.dS <- dnds_dids_data$dN.dS/mean_dN.dS
+    dnds_dids_data$dI.dS <- dnds_dids_data$dI.dS/mean_dI.dS
+    
+    rows <- nrow(dnds_dids_data)
+    
+    #print(cor.test(dnds_dids_data$dN.dS, dnds_dids_data$dS, method="spearman"))
+    #print(cor.test(dnds_dids_data$dI.dS, dnds_dids_data$dS, method="spearman"))
+    
+    Species <- rep(species, rows)
+    
+    Threshold <- rep(threshold_breaks, rows)
+    
+    dnds_dids_data <- cbind(Species, Threshold, dnds_dids_data)
+    
+    species_dnds_dids_data <- rbind(species_dnds_dids_data, dnds_dids_data)
+  }
+}
+
+species_dnds_dids_data_long <- melt(species_dnds_dids_data, measure.vars=c("dN.dS", "dI.dS"), variable.name="Category", value.name="dX.dS")
+
+species_dnds_dids_data_long$dS_bin <- cut(species_dnds_dids_data_long$dS, breaks=seq(0, 0.1, 0.0001), labels=seq(0.0001, 0.1, 0.0001))
+
+species_dnds_dids_data_long$dS_bin <- as.numeric(as.character(species_dnds_dids_data_long$dS_bin))
+
 species_dnds_dids_data_long$Comparison <- cut(species_dnds_dids_data_long$dS, breaks=c(0, 0.001, 1), labels=c("Within_clonal_complex", "Between_clonal_complex"))
 
 facet_labels=c(E_coli="E. coli", S_aureus="S. aureus", S_enterica="S. enterica", S_pneumoniae="S. pneumoniae", K_pneumoniae="K. pneumoniae", M_tuberculosis="M. tuberculosis")
 category_breaks=c("dN.dS", "dI.dS")
 category_labels=c("dN/dS", "dI/dS")
 comparison_breaks=c("Within_clonal_complex", "Between_clonal_complex")
-comparison_labels=c("Within CC", "Between CC")
+comparison_labels=c("Within\nCC", "Between\nCC")
 
-pairwise_dnds_dids_clonal_plot <- ggplot() +
-  geom_boxplot(data=species_dnds_dids_data_long, aes(x=Category, y=dX.dS, colour=Comparison), notch=TRUE) +
+species_dnds_dids_data_long_clonal_summary <- summarySE(species_dnds_dids_data_long, measurevar="dX.dS", groupvars=c("Species", "Threshold", "Category", "Comparison"))
+
+pairwise_dnds_dids_clonal_plot <- ggplot(data=species_dnds_dids_data_long_clonal_summary, aes(x=Comparison, y=dX.dS, group=Threshold, colour=Category, shape=Threshold)) +
+  geom_point(size=2, position=position_dodge(width=0.5)) +
+  geom_errorbar(aes(x=Comparison, ymin=dX.dS-se, ymax=dX.dS+se, width=0.2), position=position_dodge(width=0.5)) +
   coord_cartesian(ylim=c(0,2)) +
   facet_grid(.~Species, labeller=labeller(Species=facet_labels)) +
-  scale_colour_discrete(breaks=comparison_breaks, labels=comparison_labels) +
-  #scale_x_discrete(breaks=category_breaks, labels=category_labels) +
+  scale_x_discrete(breaks=comparison_breaks, labels=comparison_labels) +
+  scale_shape(breaks=threshold_breaks, labels=threshold_labels) +
+  scale_colour_discrete(breaks=category_breaks, labels=category_labels) +
   labs(y="dX/dS") +
   theme(strip.text.x=element_text(face="italic"))
 
@@ -189,41 +251,41 @@ pairwise_dnds_dids_clonal_plot
 
 dev.off()
 
-species_dnds_dids_data_wide <- dcast(species_dnds_dids_data_long, Species + Isolate_1 + Isolate_2 + Comparison + dS + dS_bin ~ Category, value.var="dX.dS")
-
-species_dnds_dids_data_wide_dN <- dcast(species_dnds_dids_data_wide, Species + Isolate_1 + Isolate_2 + dS + dS_bin ~ Comparison, value.var="dN.dS")
-
-species_dnds_dids_data_wide_dI <- dcast(species_dnds_dids_data_wide, Species + Isolate_1 + Isolate_2 + dS + dS_bin ~ Comparison, value.var="dI.dS")
-
-species_dnds_dids_data_wide_dN_within <- dcast(species_dnds_dids_data_wide_dN, Isolate_1 + Isolate_2 + dS + dS_bin ~ Species, value.var="Within_clonal_complex")
-
-species_dnds_dids_data_wide_dN_between <- dcast(species_dnds_dids_data_wide_dN, Isolate_1 + Isolate_2 + dS + dS_bin ~ Species, value.var="Between_clonal_complex")
-
-species_dnds_dids_data_wide_dI_within <- dcast(species_dnds_dids_data_wide_dI, Isolate_1 + Isolate_2 + dS + dS_bin ~ Species, value.var="Within_clonal_complex")
-
-species_dnds_dids_data_wide_dI_between <- dcast(species_dnds_dids_data_wide_dI, Isolate_1 + Isolate_2 + dS + dS_bin ~ Species, value.var="Between_clonal_complex")
-
-wilcox.test(species_dnds_dids_data_wide_dN_within$E_coli, species_dnds_dids_data_wide_dN_between$E_coli, alternative="greater")
-wilcox.test(species_dnds_dids_data_wide_dI_within$E_coli, species_dnds_dids_data_wide_dI_between$E_coli, alternative="greater")
-
-wilcox.test(species_dnds_dids_data_wide_dI_within$E_coli, mu=1, alternative="less")
-
-wilcox.test(species_dnds_dids_data_wide_dN_within$S_aureus, species_dnds_dids_data_wide_dN_between$S_aureus, alternative="greater")
-wilcox.test(species_dnds_dids_data_wide_dI_within$S_aureus, species_dnds_dids_data_wide_dI_between$S_aureus, alternative="greater")
-
-wilcox.test(species_dnds_dids_data_wide_dI_within$S_aureus, mu=1, alternative="less")
-
-wilcox.test(species_dnds_dids_data_wide_dN_within$S_enterica, species_dnds_dids_data_wide_dN_between$S_enterica, alternative="greater")
-wilcox.test(species_dnds_dids_data_wide_dI_within$S_enterica, species_dnds_dids_data_wide_dI_between$S_enterica, alternative="greater")
-
-wilcox.test(species_dnds_dids_data_wide_dI_within$S_enterica, mu=1, alternative="less")
-
-wilcox.test(species_dnds_dids_data_wide_dN_within$S_pneumoniae, species_dnds_dids_data_wide_dN_between$S_pneumoniae, alternative="greater")
-wilcox.test(species_dnds_dids_data_wide_dI_within$S_pneumoniae, species_dnds_dids_data_wide_dI_between$S_pneumoniae, alternative="greater")
-
-wilcox.test(species_dnds_dids_data_wide_dI_within$S_pneumoniae, mu=1, alternative="less")
-
-wilcox.test(species_dnds_dids_data_wide_dN_within$K_pneumoniae, species_dnds_dids_data_wide_dN_between$K_pneumoniae, alternative="greater")
-wilcox.test(species_dnds_dids_data_wide_dI_within$K_pneumoniae, species_dnds_dids_data_wide_dI_between$K_pneumoniae, alternative="greater")
-
-wilcox.test(species_dnds_dids_data_wide_dI_within$K_pneumoniae, mu=1, alternative="less")
+# species_dnds_dids_data_wide <- dcast(species_dnds_dids_data_long, Species + Isolate_1 + Isolate_2 + Comparison + dS + dS_bin ~ Category, value.var="dX.dS")
+# 
+# species_dnds_dids_data_wide_dN <- dcast(species_dnds_dids_data_wide, Species + Isolate_1 + Isolate_2 + dS + dS_bin ~ Comparison, value.var="dN.dS")
+# 
+# species_dnds_dids_data_wide_dI <- dcast(species_dnds_dids_data_wide, Species + Isolate_1 + Isolate_2 + dS + dS_bin ~ Comparison, value.var="dI.dS")
+# 
+# species_dnds_dids_data_wide_dN_within <- dcast(species_dnds_dids_data_wide_dN, Isolate_1 + Isolate_2 + dS + dS_bin ~ Species, value.var="Within_clonal_complex")
+# 
+# species_dnds_dids_data_wide_dN_between <- dcast(species_dnds_dids_data_wide_dN, Isolate_1 + Isolate_2 + dS + dS_bin ~ Species, value.var="Between_clonal_complex")
+# 
+# species_dnds_dids_data_wide_dI_within <- dcast(species_dnds_dids_data_wide_dI, Isolate_1 + Isolate_2 + dS + dS_bin ~ Species, value.var="Within_clonal_complex")
+# 
+# species_dnds_dids_data_wide_dI_between <- dcast(species_dnds_dids_data_wide_dI, Isolate_1 + Isolate_2 + dS + dS_bin ~ Species, value.var="Between_clonal_complex")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dN_within$E_coli, species_dnds_dids_data_wide_dN_between$E_coli, alternative="greater")
+# wilcox.test(species_dnds_dids_data_wide_dI_within$E_coli, species_dnds_dids_data_wide_dI_between$E_coli, alternative="greater")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dI_within$E_coli, mu=1, alternative="less")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dN_within$S_aureus, species_dnds_dids_data_wide_dN_between$S_aureus, alternative="greater")
+# wilcox.test(species_dnds_dids_data_wide_dI_within$S_aureus, species_dnds_dids_data_wide_dI_between$S_aureus, alternative="greater")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dI_within$S_aureus, mu=1, alternative="less")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dN_within$S_enterica, species_dnds_dids_data_wide_dN_between$S_enterica, alternative="greater")
+# wilcox.test(species_dnds_dids_data_wide_dI_within$S_enterica, species_dnds_dids_data_wide_dI_between$S_enterica, alternative="greater")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dI_within$S_enterica, mu=1, alternative="less")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dN_within$S_pneumoniae, species_dnds_dids_data_wide_dN_between$S_pneumoniae, alternative="greater")
+# wilcox.test(species_dnds_dids_data_wide_dI_within$S_pneumoniae, species_dnds_dids_data_wide_dI_between$S_pneumoniae, alternative="greater")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dI_within$S_pneumoniae, mu=1, alternative="less")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dN_within$K_pneumoniae, species_dnds_dids_data_wide_dN_between$K_pneumoniae, alternative="greater")
+# wilcox.test(species_dnds_dids_data_wide_dI_within$K_pneumoniae, species_dnds_dids_data_wide_dI_between$K_pneumoniae, alternative="greater")
+# 
+# wilcox.test(species_dnds_dids_data_wide_dI_within$K_pneumoniae, mu=1, alternative="less")
