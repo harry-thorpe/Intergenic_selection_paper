@@ -199,12 +199,35 @@ species_dnds_dids_intergenic_annotation_data_long_2_summary <- arrange(species_d
 
 #####
 
+file_1=paste(base_dir, file_base_1_1, "M_tuberculosis", file_base_2_2, "M_tuberculosis", file_base_3_3, sep="")
+
+M_tuberculosis_dnds_dids_intergenic_annotation_data <- read.csv(file=file_1, header=TRUE)
+
+mean_dI.dS_promoter <- mean(M_tuberculosis_dnds_dids_intergenic_annotation_data$dI.dS_promoter)
+
+
 file=paste(base_dir, file_base_1, "M_tuberculosis", file_base_2, "M_tuberculosis", file_base_3, sep="")
 
 M_tuberculosis_dnds_dids_intergenic_annotation_data <- read.csv(file=file, header=TRUE)
 
+M_tuberculosis_dnds_dids_intergenic_annotation_data$dI.dS_promoter <- M_tuberculosis_dnds_dids_intergenic_annotation_data$dI.dS_promoter/mean_dI.dS_promoter
+
+mean(M_tuberculosis_dnds_dids_intergenic_annotation_data$dI.dS_promoter)
+
+comparisons <- length(M_tuberculosis_dnds_dids_intergenic_annotation_data$dI.dS_promoter)
+
+comparisons_gt_1 <- nrow(M_tuberculosis_dnds_dids_intergenic_annotation_data[M_tuberculosis_dnds_dids_intergenic_annotation_data$dI.dS_promoter > 1, ])
+
+comparisons
+
+comparisons_gt_1
+
+ratio <- comparisons_gt_1/comparisons
+
+ratio
+
 M_tuberculosis_promoter_plot <- ggplot(M_tuberculosis_dnds_dids_intergenic_annotation_data, aes(x=dI.dS_promoter)) +
-  geom_histogram(binwidth=0.3) +
+  geom_histogram(binwidth=0.4) +
   scale_x_continuous(breaks=seq(0, 8, 1)) +
   labs(x="dI/dS", y="Count")
 

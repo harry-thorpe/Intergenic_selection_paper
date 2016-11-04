@@ -95,7 +95,7 @@ for(i in 1:species_count){
   Terminator <- NULL
   Non_coding_RNA <- NULL
   
-  for(rep in 1:20){
+  for(rep in 1:1000){
     rep_NS <- sample(NS, size=length(NS), replace=TRUE)
     
     rbs[rep] <- length(grep("S_rbs", rep_NS)) / (length(grep("S_rbs", rep_NS)) + length(grep("N_rbs", rep_NS)))
@@ -142,7 +142,7 @@ category_labels=c("RBS", "Non coding RNA", "Promoter", "Terminator", "Unannotate
 
 PSM_intergenic_annotation_plot <- ggplot(species_PSM_intergenic_annotation_data_summary, aes(x=reorder(Category, Order), y=PSM, fill=Category)) +
   geom_bar(stat="identity") +
-  geom_errorbar(aes(x=reorder(Category, Order), ymin=PSM-se, ymax=PSM+se), width=0.5) +
+  geom_errorbar(aes(x=reorder(Category, Order), ymin=PSM-ci, ymax=PSM+ci), width=0.5) +
   scale_y_continuous(limits=c(0, 0.8)) +
   facet_wrap(~Species, ncol=3, labeller=labeller(Species=facet_labels)) +
   scale_x_discrete(breaks=category_breaks, labels=category_labels) +
