@@ -20,6 +20,8 @@ for threshold in ${threshold_array[@]}; do
 		mkdir "${base_dir}/Analysis/${analysis}/${species}_${analysis}/threshold_$threshold"
 	fi
 
+	perl "Mutation_caller.pl" "$species" "$analysis" "$base_dir" "$threshold"
+	
 	perl "PSM_calculator.pl" "$species" "$analysis" "$base_dir" "$threshold"
 done
 
