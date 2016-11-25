@@ -111,7 +111,8 @@ category_labels=c("dN/dS", "dI/dS\nUpstream", "dI/dS\nAll")
 
 pairwise_dnds_dids_upstream_plot <- ggplot() +
   geom_boxplot(data=species_dnds_dids_upstream_data_long_summary, aes(x=Category, y=dX.dS), outlier.size=NA) +
-  geom_point(data=species_dnds_dids_upstream_data_long_summary, aes(x=Category, y=dX.dS, colour=Category), position=position_jitter(w=0.6)) +
+  geom_point(data=species_dnds_dids_upstream_data_long_summary, aes(x=Category, y=dX.dS, colour=Category), position=position_jitter(w=0.3)) +
+  geom_hline(yintercept=1, colour="red", linetype="dashed") +
   coord_cartesian(ylim=c(0,2)) +
   facet_wrap(~Species, ncol=3, labeller=labeller(Species=facet_labels)) +
   scale_x_discrete(breaks=category_breaks, labels=category_labels) +
@@ -119,8 +120,8 @@ pairwise_dnds_dids_upstream_plot <- ggplot() +
   theme(legend.position="none",
         strip.text.x=element_text(face="italic"))
 
-#out_file_pdf <- paste(base_dir, "/Figures/Figure_S3", ".pdf", sep="")
-out_file_tif <- paste(base_dir, "/Figures/Figure_S3", ".tif", sep="")
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_S5", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_S5", ".tif", sep="")
 
 #pdf(file=out_file_pdf, height=10, width=15)
 tiff(file=out_file_tif, height=10, width=15, units="in", res=100)

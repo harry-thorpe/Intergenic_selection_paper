@@ -140,34 +140,53 @@ wilcox.test(species_dnds_dids_intergenic_annotation_data_long_summary_wide_M_tub
 
 facet_labels=c(E_coli="E. coli", S_aureus="S. aureus", S_enterica="S. enterica", S_pneumoniae="S. pneumoniae", K_pneumoniae="K. pneumoniae", M_tuberculosis="M. tuberculosis")
 category_breaks=c("dN.dS", "dI.dS_rbs", "dI.dS_non_coding_RNA", "dI.dS_promoter", "dI.dS_terminator", "dI.dS_unannotated")
-category_labels=c("dN/dS", "dI/dS\nRBS", "dI/dS\nNon coding RNA", "dI/dS\nPromoter", "dI/dS\nTerminator", "dI/dS\nUnannotated")
+category_labels=c("dN/dS", "dI/dS\nRBS", "dI/dS\nNon coding\nRNA", "dI/dS\nPromoter", "dI/dS\nTerminator", "dI/dS\nUnannotated")
 
 pairwise_dnds_dids_intergenic_annotation_plot <- ggplot() +
   geom_boxplot(data=species_dnds_dids_intergenic_annotation_data_long_summary, aes(x=Category, y=dX.dS), outlier.size=NA) +
-  geom_point(data=species_dnds_dids_intergenic_annotation_data_long_summary, aes(x=Category, y=dX.dS, colour=Category), position=position_jitter(w=0.6)) +
+  geom_point(data=species_dnds_dids_intergenic_annotation_data_long_summary, aes(x=Category, y=dX.dS, colour=Category), position=position_jitter(w=0.3)) +
+  geom_hline(yintercept=1, colour="red", linetype="dashed") +
   coord_cartesian(ylim=c(0, 4)) +
   facet_wrap(~Species, ncol=3, labeller=labeller(Species=facet_labels)) +
   scale_x_discrete(breaks=category_breaks, labels=category_labels) +
   labs(y="dX/dS") +
   theme(legend.position="none",
-        strip.text.x=element_text(face="italic"))
+        strip.text.x=element_text(face="italic"),
+        axis.text.x=element_text(size=10))
 
-
-#species_dnds_dids_intergenic_annotation_data_long_CC <- species_dnds_dids_intergenic_annotation_data_long_summary[ which(species_dnds_dids_intergenic_annotation_data_long_summary$dS_bin < 0.001), ]
-species_dnds_dids_intergenic_annotation_data_long_CC <- species_dnds_dids_intergenic_annotation_data_long[ which(species_dnds_dids_intergenic_annotation_data_long$dS < 0.001), ]
-
-#ggplot(species_dnds_dids_intergenic_annotation_data_long_CC, aes(x=Category, y=dX.dS, colour=Category)) +
-#  geom_boxplot() +
-#  scale_y_continuous(limits=c(0, 2)) +
-#  facet_wrap(~Species, ncol=2)
-
-#out_file_pdf <- paste(base_dir, "/Figures/Figure_5", ".pdf", sep="")
-out_file_tif <- paste(base_dir, "/Figures/Figure_5", ".tif", sep="")
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_4", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_4", ".tif", sep="")
 
 #pdf(file=out_file_pdf, height=10, width=15)
 tiff(file=out_file_tif, height=10, width=15, units="in", res=100)
 
 pairwise_dnds_dids_intergenic_annotation_plot
+
+dev.off()
+
+#####
+
+#species_dnds_dids_intergenic_annotation_data_long_CC <- species_dnds_dids_intergenic_annotation_data_long_summary[ which(species_dnds_dids_intergenic_annotation_data_long_summary$dS_bin < 0.001), ]
+species_dnds_dids_intergenic_annotation_data_long_CC <- species_dnds_dids_intergenic_annotation_data_long[ which(species_dnds_dids_intergenic_annotation_data_long$dS < 0.001), ]
+
+cc_dnds_dids_intergenic_annotation_plot <- ggplot(species_dnds_dids_intergenic_annotation_data_long_CC, aes(x=Category, y=dX.dS, colour=Category)) +
+  geom_boxplot() +
+  geom_hline(yintercept=1, colour="red", linetype="dashed") +
+  scale_y_continuous(limits=c(0, 4)) +
+  facet_wrap(~Species, ncol=3, labeller=labeller(Species=facet_labels)) +
+  scale_x_discrete(breaks=category_breaks, labels=category_labels) +
+  labs(y="dX/dS") +
+  theme(legend.position="none",
+        strip.text.x=element_text(face="italic"),
+        axis.text.x=element_text(size=10))
+
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_S9", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_S9", ".tif", sep="")
+
+#pdf(file=out_file_pdf, height=10, width=15)
+tiff(file=out_file_tif, height=10, width=15, units="in", res=100)
+
+cc_dnds_dids_intergenic_annotation_plot
 
 dev.off()
 
@@ -231,8 +250,8 @@ M_tuberculosis_promoter_plot <- ggplot(M_tuberculosis_dnds_dids_intergenic_annot
   scale_x_continuous(breaks=seq(0, 8, 1)) +
   labs(x="dI/dS", y="Count")
 
-#out_file_pdf <- paste(base_dir, "/Figures/Figure_S6", ".pdf", sep="")
-out_file_tif <- paste(base_dir, "/Figures/Figure_S6", ".tif", sep="")
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_S8", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_S8", ".tif", sep="")
 
 #pdf(file=out_file_pdf, height=10, width=15)
 tiff(file=out_file_tif, height=10, width=15, units="in", res=100)

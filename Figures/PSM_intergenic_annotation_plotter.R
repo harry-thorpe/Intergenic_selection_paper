@@ -95,7 +95,7 @@ for(i in 1:species_count){
   Terminator <- NULL
   Non_coding_RNA <- NULL
   
-  for(rep in 1:1000){
+  for(rep in 1:10){
     rep_NS <- sample(NS, size=length(NS), replace=TRUE)
     
     rbs[rep] <- length(grep("S_rbs", rep_NS)) / (length(grep("S_rbs", rep_NS)) + length(grep("N_rbs", rep_NS)))
@@ -138,7 +138,7 @@ species_PSM_intergenic_annotation_data_summary <- summarySE(species_PSM_intergen
 
 facet_labels=c(E_coli="E. coli", S_aureus="S. aureus", S_enterica="S. enterica", S_pneumoniae="S. pneumoniae", K_pneumoniae="K. pneumoniae", M_tuberculosis="M. tuberculosis")
 category_breaks=c("rbs", "Non_coding_RNA", "Promoter", "Terminator", "Unannotated")
-category_labels=c("RBS", "Non coding RNA", "Promoter", "Terminator", "Unannotated")
+category_labels=c("RBS", "Non coding\nRNA", "Promoter", "Terminator", "Unannotated")
 
 PSM_intergenic_annotation_plot <- ggplot(species_PSM_intergenic_annotation_data_summary, aes(x=reorder(Category, Order), y=PSM, fill=Category)) +
   geom_bar(stat="identity") +
@@ -148,10 +148,11 @@ PSM_intergenic_annotation_plot <- ggplot(species_PSM_intergenic_annotation_data_
   scale_x_discrete(breaks=category_breaks, labels=category_labels) +
   labs(x="Category", y="PSM") +
   theme(legend.position="none",
-        strip.text.x=element_text(face="italic"))
+        strip.text.x=element_text(face="italic"),
+        axis.text.x=element_text(size=10))
 
-#out_file_pdf <- paste(base_dir, "/Figures/Figure_S4", ".pdf", sep="")
-out_file_tif <- paste(base_dir, "/Figures/Figure_S4", ".tif", sep="")
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_S6", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_S6", ".tif", sep="")
 
 #pdf(file=out_file_pdf, height=10, width=15)
 tiff(file=out_file_tif, height=10, width=15, units="in", res=100)

@@ -41,6 +41,8 @@ for(i in 1:species_count){
 #species_mutation_bias_data <- species_mutation_bias_data[species_mutation_bias_data$Category != "Nonsense", ]
 species_mutation_bias_data <- species_mutation_bias_data[species_mutation_bias_data$Category == "All", ]
 
+species_mutation_bias_data$Count <- species_mutation_bias_data$Count/100
+
 mutation_breaks=c("AC", "AG", "AT", "CA", "CG", "CT")
 #mutation_labels=c("A/T -> C/G", "A/T -> G/C", "A/T -> T/A", "C/G -> A/T", "C/G -> G/C", "C/G -> T/A")
 mutation_labels=c("A->C\nor\nT->G", "A->G\nor\nT->C", "A->T\nor\nT->A", "C->A\nor\nG->T", "C->G\nor\nG->C", "C->T\nor\nG->A")
@@ -54,8 +56,8 @@ mutation_bias_plot <- ggplot(species_mutation_bias_data, aes(x=Mutation, y=Count
   theme(legend.position="none",
         strip.text.x=element_text(face="italic"))
 
-#out_file_pdf <- paste(base_dir, "/Figures/Figure_S9", ".pdf", sep="")
-out_file_tif <- paste(base_dir, "/Figures/Figure_S9", ".tif", sep="")
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_S10", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_S10", ".tif", sep="")
 
 #pdf(file=out_file_pdf, height=10, width=15)
 tiff(file=out_file_tif, height=10, width=15, units="in", res=100)

@@ -64,8 +64,8 @@ file_base_2="_Mutation/"
 file_base_3="_PSM.csv"
 
 threshold_array <- c("threshold_0/", "", "threshold_99/")
-threshold_breaks <- c("relaxed_core", "core", "strict_core")
-threshold_labels <- c("Relaxed core", "Core", "Strict core")
+threshold_breaks <- c("relaxed_core", "intermediate_core", "strict_core")
+threshold_labels <- c("Relaxed core", "Intermediate core", "Strict core")
 
 threshold_count <- length(threshold_array)
 
@@ -102,7 +102,7 @@ for(i in 1:species_count){
     Nonsynonymous <- NULL
     Nonsense <- NULL
     
-    for(rep in 1:1000){
+    for(rep in 1:10){
       rep_NS <- sample(NS, size=length(NS), replace=TRUE)
       
       Intergenic[rep] <- length(grep("S_INTERGENIC", rep_NS)) / (length(grep("S_INTERGENIC", rep_NS)) + length(grep("N_INTERGENIC", rep_NS)))

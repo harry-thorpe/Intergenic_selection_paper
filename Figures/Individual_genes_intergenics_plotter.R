@@ -103,7 +103,7 @@ category_labels=c("Synonymous", "Intergenic", "Non-synonymous", "Nonsense")
 
 core_gene_intergenic_PSM_plot <- ggplot(species_core_gene_intergenic_PSM, aes(x=reorder(Category, Order), y=PSM, colour=Category)) +
   geom_boxplot(notch=TRUE) +
-  facet_wrap(~Species, ncol=2, labeller=labeller(Species=facet_labels)) +
+  facet_wrap(~Species, ncol=3, labeller=labeller(Species=facet_labels)) +
   scale_x_discrete(breaks=category_breaks, labels=category_labels) +
   labs(x="Category", y="PSM") +
   theme(strip.text.x=element_text(face="italic"),

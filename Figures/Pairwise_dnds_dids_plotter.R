@@ -143,15 +143,15 @@ category_labels=c("dN/dS", "dI/dS")
 
 pairwise_dnds_dids_plot <- ggplot(species_dnds_dids_data_long, aes(x=dS, y=dX.dS, colour=Category)) +
   geom_point() +
+  geom_hline(yintercept=1, colour="red", linetype="dashed") +
   coord_cartesian(ylim=c(0, 2)) +
   facet_wrap(~Species, ncol=3, scales="free", labeller=labeller(Species=facet_labels)) +
-  scale_colour_discrete(breaks=category_breaks, labels=category_labels) +
-  #guides(colour=guide_legend(override.aes=list(alpha=1))) +
+  scale_colour_discrete(breaks=category_breaks, labels=category_labels, guide=guide_legend(reverse=TRUE)) +
   labs(y="dX/dS") +
   theme(strip.text.x=element_text(face="italic"))
 
-#out_file_pdf <- paste(base_dir, "/Figures/Figure_S2", ".pdf", sep="")
-out_file_tif <- paste(base_dir, "/Figures/Figure_S2", ".tif", sep="")
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_S4", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_S4", ".tif", sep="")
 
 #pdf(file=out_file_pdf, height=10, width=15)
 tiff(file=out_file_tif, height=10, width=15, units="in", res=100)
@@ -173,8 +173,8 @@ file_base_2_2="_Pairwise_dnds_dids_mutation_bias_correction/"
 file_base_3_3="_dnds_dids_simulated.csv"
 
 threshold_array <- c("threshold_0/", "", "threshold_99/")
-threshold_breaks <- c("relaxed_core", "core", "strict_core")
-threshold_labels <- c("Relaxed core", "Core", "Strict core")
+threshold_breaks <- c("relaxed_core", "intermediate_core", "strict_core")
+threshold_labels <- c("Relaxed core", "Intermediate core", "Strict core")
 
 threshold_count <- length(threshold_array)
 
@@ -233,11 +233,12 @@ species_dnds_dids_data_long_clonal_summary <- summarySE(species_dnds_dids_data_l
 pairwise_dnds_dids_clonal_plot <- ggplot(data=species_dnds_dids_data_long_clonal_summary, aes(x=Comparison, y=dX.dS, group=Threshold, colour=Category, shape=Threshold)) +
   geom_point(size=2, position=position_dodge(width=0.5)) +
   geom_errorbar(aes(x=Comparison, ymin=dX.dS-se, ymax=dX.dS+se, width=0.2), position=position_dodge(width=0.5)) +
+  geom_hline(yintercept=1, colour="red", linetype="dashed") +
   coord_cartesian(ylim=c(0,2)) +
   facet_grid(.~Species, labeller=labeller(Species=facet_labels)) +
   scale_x_discrete(breaks=comparison_breaks, labels=comparison_labels) +
   scale_shape(breaks=threshold_breaks, labels=threshold_labels) +
-  scale_colour_discrete(breaks=category_breaks, labels=category_labels) +
+  scale_colour_discrete(breaks=category_breaks, labels=category_labels, guide=guide_legend(reverse=TRUE)) +
   labs(y="dX/dS") +
   theme(strip.text.x=element_text(face="italic"))
 

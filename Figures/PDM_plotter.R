@@ -64,8 +64,8 @@ file_base_2="_Mutation/"
 file_base_3="_PSM.csv"
 
 threshold_array <- c("threshold_0/", "", "threshold_99/")
-threshold_breaks <- c("relaxed_core", "core", "strict_core")
-threshold_labels <- c("Relaxed core", "Core", "Strict core")
+threshold_breaks <- c("relaxed_core", "intermediate_core", "strict_core")
+threshold_labels <- c("Relaxed core", "Intermediate core", "Strict core")
 
 threshold_count <- length(threshold_array)
 
@@ -158,8 +158,8 @@ PDM_plot <- ggplot(species_PDM_data_summary, aes(x=reorder(Category, Order), y=P
   theme(strip.text.x=element_text(face="italic"),
         axis.text.x=element_text(size=10))
 
-#out_file_pdf <- paste(base_dir, "/Figures/Figure_S10", ".pdf", sep="")
-out_file_tif <- paste(base_dir, "/Figures/Figure_S10", ".tif", sep="")
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_S3", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_S3", ".tif", sep="")
 
 #pdf(file=out_file_pdf, height=10, width=15)
 tiff(file=out_file_tif, height=10, width=15, units="in", res=100)
