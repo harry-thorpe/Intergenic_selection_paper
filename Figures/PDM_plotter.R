@@ -158,8 +158,8 @@ PDM_plot <- ggplot(species_PDM_data_summary, aes(x=reorder(Category, Order), y=P
   theme(strip.text.x=element_text(face="italic"),
         axis.text.x=element_text(size=10))
 
-#out_file_pdf <- paste(base_dir, "/Figures/Figure_S3", ".pdf", sep="")
-out_file_tif <- paste(base_dir, "/Figures/Figure_S3", ".tif", sep="")
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_S2", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_S2", ".tif", sep="")
 
 #pdf(file=out_file_pdf, height=10, width=15)
 tiff(file=out_file_tif, height=10, width=15, units="in", res=100)

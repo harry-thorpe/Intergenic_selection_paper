@@ -247,6 +247,7 @@ ratio
 
 M_tuberculosis_promoter_plot <- ggplot(M_tuberculosis_dnds_dids_intergenic_annotation_data, aes(x=dI.dS_promoter)) +
   geom_histogram(binwidth=0.4) +
+  geom_vline(xintercept=1, colour="red", linetype="dashed") +
   scale_x_continuous(breaks=seq(0, 8, 1)) +
   labs(x="dI/dS", y="Count")
 

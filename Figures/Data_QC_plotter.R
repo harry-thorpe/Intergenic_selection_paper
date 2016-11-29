@@ -92,8 +92,8 @@ data_qc_plot <- ggdraw() +
   draw_plot(depth_plot, 0, 0.66, 1, 0.33) +
   draw_plot_label(c("a", "b", "c"), c(0, 0, 0), c(1, 0.66, 0.33))
 
-#out_file_pdf <- paste(base_dir, "/Figures/Figure_S2", ".pdf", sep="")
-out_file_tif <- paste(base_dir, "/Figures/Figure_S2", ".tif", sep="")
+#out_file_pdf <- paste(base_dir, "/Figures/Figure_S3", ".pdf", sep="")
+out_file_tif <- paste(base_dir, "/Figures/Figure_S3", ".tif", sep="")
 
 #pdf(file=out_file_pdf, height=7, width=15)
 tiff(file=out_file_tif, height=7, width=15, units="in", res=100)
