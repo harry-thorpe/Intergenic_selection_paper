@@ -102,7 +102,7 @@ for(i in 1:species_count){
     Nonsynonymous <- NULL
     Nonsense <- NULL
     
-    for(rep in 1:10){
+    for(rep in 1:1000){
       rep_NS <- sample(NS, size=length(NS), replace=TRUE)
       
       Intergenic[rep] <- length(grep("S_INTERGENIC", rep_NS)) / (length(grep("S_INTERGENIC", rep_NS)) + length(grep("N_INTERGENIC", rep_NS)))

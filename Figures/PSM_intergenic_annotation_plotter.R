@@ -95,7 +95,7 @@ for(i in 1:species_count){
   Terminator <- NULL
   Non_coding_RNA <- NULL
   
-  for(rep in 1:10){
+  for(rep in 1:1000){
     rep_NS <- sample(NS, size=length(NS), replace=TRUE)
     
     rbs[rep] <- length(grep("S_rbs", rep_NS)) / (length(grep("S_rbs", rep_NS)) + length(grep("N_rbs", rep_NS)))

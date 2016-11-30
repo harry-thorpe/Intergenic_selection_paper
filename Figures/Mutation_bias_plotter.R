@@ -41,6 +41,15 @@ for(i in 1:species_count){
 #species_mutation_bias_data <- species_mutation_bias_data[species_mutation_bias_data$Category != "Nonsense", ]
 species_mutation_bias_data <- species_mutation_bias_data[species_mutation_bias_data$Category == "All", ]
 
+species_mutation_bias_data <- species_mutation_bias_data[(species_mutation_bias_data$Mutation == "AC" |
+                                                          species_mutation_bias_data$Mutation == "AG" |
+                                                          species_mutation_bias_data$Mutation == "AT" |
+                                                          species_mutation_bias_data$Mutation == "CA" |
+                                                          species_mutation_bias_data$Mutation == "CG" |
+                                                          species_mutation_bias_data$Mutation == "CT"), ]
+
+species_mutation_bias_data$Count <- species_mutation_bias_data$Count * 2
+
 species_mutation_bias_data$Count <- species_mutation_bias_data$Count/100
 
 mutation_breaks=c("AC", "AG", "AT", "CA", "CG", "CT")

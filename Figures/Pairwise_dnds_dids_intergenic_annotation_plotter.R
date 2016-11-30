@@ -146,7 +146,7 @@ pairwise_dnds_dids_intergenic_annotation_plot <- ggplot() +
   geom_boxplot(data=species_dnds_dids_intergenic_annotation_data_long_summary, aes(x=Category, y=dX.dS), outlier.size=NA) +
   geom_point(data=species_dnds_dids_intergenic_annotation_data_long_summary, aes(x=Category, y=dX.dS, colour=Category), position=position_jitter(w=0.3)) +
   geom_hline(yintercept=1, colour="red", linetype="dashed") +
-  coord_cartesian(ylim=c(0, 4)) +
+  coord_cartesian(ylim=c(0, 3)) +
   facet_wrap(~Species, ncol=3, labeller=labeller(Species=facet_labels)) +
   scale_x_discrete(breaks=category_breaks, labels=category_labels) +
   labs(y="dX/dS") +

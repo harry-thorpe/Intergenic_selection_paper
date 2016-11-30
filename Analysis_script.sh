@@ -24,7 +24,7 @@ cd "$base_dir"
 
 # Change this to reflect your array of species.
 species_array=("S_aureus" "S_pneumoniae" "E_coli" "S_enterica" "K_pneumoniae" "M_tuberculosis")
-#species_array=("test")
+#species_array=("M_tuberculosis")
 
 #analysis_array[0]="Gene_intergenic_coordinates"
 #analysis_array[1]="Core_genome_alignment"
@@ -61,14 +61,14 @@ species_array=("S_aureus" "S_pneumoniae" "E_coli" "S_enterica" "K_pneumoniae" "M
 cd "$base_dir/Figures"
 
 #Rscript "Sequence_summary_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
-#Rscript "PSM_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
+Rscript "PSM_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Individual_genes_intergenics_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Data_QC_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
-#Rscript "PDM_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
+Rscript "PDM_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Pairwise_dnds_dids_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Pairwise_dnds_dids_upstream_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
-#Rscript "PSM_intergenic_annotation_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
-Rscript "Pairwise_dnds_dids_intergenic_annotation_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
+Rscript "PSM_intergenic_annotation_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
+#Rscript "Pairwise_dnds_dids_intergenic_annotation_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Pairwise_dnds_dids_terminator_stem_loop_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Mutation_intergenic_unannotated_distance_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"
 #Rscript "Mutation_bias_plotter.R" "$base_dir" "E_coli" "S_enterica" "K_pneumoniae" "S_aureus" "S_pneumoniae" "M_tuberculosis"

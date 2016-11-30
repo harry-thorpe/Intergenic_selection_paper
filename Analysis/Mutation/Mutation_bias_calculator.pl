@@ -119,6 +119,8 @@ while(<INPUT>){
 				
 				$snp_hash{$cat}{$snp_type_array[0]}++;
 				$snp_hash{"All"}{$snp_type_array[0]}++;
+				$snp_hash{$cat}{$snp_type_array[1]}++;
+				$snp_hash{"All"}{$snp_type_array[1]}++;
 				#$snp_count_hash{$cat}++;
 				#$snp_count_hash{"All"}++;
 				
