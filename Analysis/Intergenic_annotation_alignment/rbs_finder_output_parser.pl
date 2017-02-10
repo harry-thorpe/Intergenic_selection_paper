@@ -23,9 +23,11 @@ open INPUT, "${base_dir}/Analysis/${analysis}/${species}_${analysis}/${species}_
 while(<INPUT>){
 	$line=$_;
 	chomp $line;
-	@line_array=split(/\s+/, $line);
 	
-	if($line =~ /^\S+/){
+	if($line =~ /^\s*(\S+\s+\d+\s+\d+.*)/){
+		$line=$1;
+		@line_array=split(/\s+/, $line);
+		
 		$gene_id=$line_array[0];
 		$new_sta=$line_array[1];
 		$old_sta=$line_array[8];
